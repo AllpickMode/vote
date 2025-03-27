@@ -80,10 +80,6 @@ def create():
 
 @app.route('/vote/<int:poll_id>', methods=['GET', 'POST'])
 def vote(poll_id):
-    # 初始化session中的voted_polls（如果不存在）
-    if 'voted_polls' not in session:
-        session['voted_polls'] = []
-    
     db = get_db()
     poll = db.execute('SELECT * FROM polls WHERE id = ?', [poll_id]).fetchone()
     
@@ -94,34 +90,55 @@ def vote(poll_id):
     if not options:
         abort(404)
     
-    # 检查用户是否已经投过票
-    has_voted = poll_id in session['voted_polls']
+    # 获取真实IP（支持代理）
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
+    
+    # 检查是否已投票（24小时内）
+    has_voted = db.execute(
+        '''SELECT 1 FROM voter_ips 
+        WHERE poll_id = ? 
+        AND ip_address = ?
+        AND datetime(timestamp) > datetime('now', '-24 hours')''',
+        [poll_id, client_ip]
+    ).fetchone() is not None
+    
+    if has_voted:
+        flash('您已经投过票了', 'error')
+        return redirect(url_for('results', poll_id=poll_id))
     
     if request.method == 'POST':
-        if has_voted:
-            flash('您已经参与过这个投票了')
+        # 检查IP是否已投票
+        existing_vote = db.execute(
+            'SELECT 1 FROM voter_ips WHERE poll_id = ? AND ip_address = ?',
+            [poll_id, client_ip]
+        ).fetchone()
+        
+        if existing_vote:
+            flash('该IP地址已参与过本次投票', 'error')
             return redirect(url_for('results', poll_id=poll_id))
             
         option_id = request.form.get('option')
         if not option_id:
-            flash('请选择一个选项')
+            flash('请选择一个选项', 'error')
             return render_template('vote.html', poll=poll, options=options, has_voted=has_voted)
         
         try:
-            db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?', 
-                      [option_id, poll_id])
-            db.commit()
-            # 记录用户已投票
-            voted_polls = session['voted_polls']
-            voted_polls.append(poll_id)
-            session['voted_polls'] = voted_polls
-            flash('投票成功！')
+            # 使用事务保证原子性操作
+            with db:
+                # 更新投票数
+                db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?',
+                          [option_id, poll_id])
+                # 记录IP地址和客户端信息
+                country_code = request.headers.get('CF-IPCountry', 'XX')[:2]
+                user_agent = request.headers.get('User-Agent', '')[:500]
+                db.execute('INSERT INTO voter_ips (poll_id, ip_address, country_code, user_agent) VALUES (?, ?, ?, ?)',
+                          [poll_id, client_ip, country_code, user_agent])
+            flash('投票成功！', 'success')
             return redirect(url_for('results', poll_id=poll_id))
-        except sqlite3.Error:
-            db.rollback()
-            flash('投票失败，请稍后重试')
+        except sqlite3.IntegrityError:
+            flash('投票失败，请重试', 'error')
     
-    return render_template('vote.html', poll=poll, options=options, has_voted=has_voted)
+    return render_template('vote.html', poll=poll, options=options)
 
 @app.route('/results/<int:poll_id>')
 def results(poll_id):
