@@ -1,67 +1,53 @@
 # 投票系统技术文档
 
-## 1. 项目概述
+一个使用 Flask 和 SQLite 构建的现代化轻量级投票系统。该系统提供直观的用户界面，支持实时投票和结果显示，适合小型到中型的在线投票需求。
 
 这是一个使用 Flask 和 SQLite 构建的现代化轻量级投票系统。该系统提供了创建投票、参与投票和实时查看结果的功能，具有良好的安全性和用户体验。
 
 ### 1.1 核心特性
 
-- 创建自定义投票
-- 动态添加投票选项
-- 实时投票结果显示
-- 防重复投票机制
-- 响应式设计
-- 完整的错误处理
-- 安全性保护
+- **创建自定义投票**
+  - 支持动态添加多个选项
+  - 实时表单验证
+  - CSRF 保护机制
 
-### 1.2 技术栈
+- **投票参与**
+  - 直观的单选界面
+  - 防止重复投票（基于IP地址和时间限制）
+  - 24小时投票限制
+  - 实时提交反馈
 
-- **后端框架**: Flask
-- **数据库**: SQLite
-- **前端**: HTML5, CSS3, JavaScript
-- **安全**: CSRF 保护, 参数化查询
-- **日志**: Rotating File Handler
+- **结果展示**
+  - 实时更新的投票统计
+  - 动态进度条显示
+  - 百分比和具体票数显示
+  - 创建时间记录
 
-## 2. 系统架构
+- **用户界面**
+  - 响应式设计，支持移动设备
+  - 现代化 UI 设计
+  - 平滑动画效果
+  - 直观的导航系统
 
-### 2.1 目录结构
+## 技术架构
 
-```
-vote/
-├── app.py              # Flask应用主文件
-├── schema.sql          # 数据库模式定义
-├── requirements.txt    # 项目依赖
-├── static/            # 静态资源
-│   ├── icons/        # 图标文件
-│   └── style.css     # 样式文件
-└── templates/         # HTML模板
-    ├── base.html     # 基础模板
-    ├── index.html    # 首页
-    ├── create.html   # 创建投票
-    ├── vote.html     # 投票页面
-    ├── results.html  # 结果页面
-    ├── 404.html      # 404错误页面
-    └── 500.html      # 500错误页面
-```
+### 后端技术
+- **Web 框架**: Flask
+- **数据库**: SQLite3
+- **模板引擎**: Jinja2
+- **会话管理**: Flask Session
+- **安全**: Flask-WTF (CSRF 保护)
 
-### 2.2 架构设计
+### 前端技术
+- **样式**: 自定义 CSS3 (支持现代特性)
+- **交互**: 原生 JavaScript
+- **布局**: Flexbox 和 Grid
+- **动画**: CSS3 Animations 和 Transitions
+- **设计**: 响应式设计 + 移动优先
 
-- **MVC模式**
-  - Model: SQLite数据库
-  - View: Jinja2模板
-  - Controller: Flask路由和视图函数
+### 数据库结构
 
-- **模块化设计**
-  - 数据库操作封装
-  - 错误处理中间件
-  - CSRF保护
-  - 日志系统
-
-## 3. 数据库设计
-
-### 3.1 表结构
-
-#### polls 表 (投票表)
+#### polls 表
 ```sql
 CREATE TABLE polls (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,98 +56,62 @@ CREATE TABLE polls (
 );
 ```
 
-#### options 表 (选项表)
+#### options 表
 ```sql
 CREATE TABLE options (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     poll_id INTEGER NOT NULL,
     option_text TEXT NOT NULL,
-    votes INTEGER NOT NULL DEFAULT 0,
-    FOREIGN KEY (poll_id) REFERENCES polls(id)
+    votes INTEGER DEFAULT 0,
+    FOREIGN KEY (poll_id) REFERENCES polls (id)
 );
 ```
 
-#### voter_ips 表 (投票记录表)
+#### vote_records 表
 ```sql
-CREATE TABLE voter_ips (
+CREATE TABLE vote_records (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     poll_id INTEGER NOT NULL,
+    option_id INTEGER NOT NULL,
     ip_address TEXT NOT NULL,
-    country_code CHAR(2) NOT NULL,
-    user_agent TEXT NOT NULL,
-    is_vpn BOOLEAN DEFAULT 0,
     voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    request_count INTEGER DEFAULT 1,
-    block_until DATETIME,
-    UNIQUE(poll_id, ip_address)
+    FOREIGN KEY (poll_id) REFERENCES polls (id),
+    FOREIGN KEY (option_id) REFERENCES options (id)
 );
+
+-- 优化索引
+CREATE INDEX idx_vote_records_poll_ip ON vote_records(poll_id, ip_address);
+CREATE INDEX idx_vote_records_time ON vote_records(voted_at);
 ```
 
-### 3.2 索引设计
-- `idx_voter_ips_block`: 用于快速查询被封禁的IP
-- `idx_voter_ips_country`: 用于按国家代码查询投票记录
+## 文件结构
 
-## 4. 核心功能实现
+```
+vote/
+├── app.py              # Flask应用主文件
+├── schema.sql          # 数据库模式定义
+├── requirements.txt    # 项目依赖
+├── README.md          # 项目文档
+├── votes.db           # SQLite数据库文件
+├── static/
+│   ├── style.css      # 全局样式文件
+│   └── icons/
+│       └── vote-icon.svg  # 系统图标
+└── templates/
+    ├── base.html      # 基础模板
+    ├── index.html     # 首页模板
+    ├── create.html    # 创建投票页面
+    ├── vote.html      # 投票页面
+    ├── results.html   # 结果页面
+    └── 404.html       # 错误页面
+```
 
-### 4.1 投票创建流程
+## 安装指南
 
-1. 验证输入数据
-   - 问题不能为空
-   - 至少需要两个有效选项
-2. 事务处理
-   - 创建投票记录
-   - 添加选项记录
-3. 错误处理
-   - 数据库异常处理
-   - 输入验证失败处理
-
-### 4.2 投票处理流程
-
-1. IP地址验证
-   - 检查24小时内是否已投票
-   - 支持代理服务器场景
-2. 选项验证
-   - 确保选项存在且有效
-3. 事务处理
-   - 更新投票计数
-   - 记录投票IP信息
-4. 防作弊机制
-   - IP地址限制
-   - 用户代理记录
-   - 国家代码记录
-
-### 4.3 结果显示
-
-- 实时计算投票比例
-- 支持动态刷新
-- 可视化展示
-
-## 5. 安全特性
-
-### 5.1 CSRF保护
-- 使用 Flask-WTF 实现CSRF令牌
-- 所有POST请求都需要验证CSRF令牌
-
-### 5.2 SQL注入防护
-- 使用参数化查询
-- 输入数据验证和清理
-
-### 5.3 防重复投票
-- IP地址追踪
-- 时间限制（24小时）
-- 地理位置记录
-
-### 5.4 错误处理
-- 自定义错误页面
-- 详细日志记录
-- 优雅的异常处理
-
-## 6. 部署指南
-
-### 6.1 环境要求
+### 系统要求
 - Python 3.7+
-- SQLite 3
-- pip包管理器
+- pip（Python包管理器）
+- 虚拟环境（推荐）
 
 ### 6.2 安装步骤
 
@@ -202,25 +152,133 @@ python
    - 定期数据库备份
    - 性能监控
 
-## 7. 最佳实践
+1. 点击导航栏中的"创建投票"
+2. 在表单中填写：
+   - 投票问题（必填）
+   - 至少两个投票选项（必填）
+3. 可以通过"添加选项"按钮添加更多选项
+4. 点击"创建投票"提交
 
-### 7.1 代码规范
-- 遵循PEP 8规范
-- 使用有意义的变量名
-- 添加适当的注释
-- 模块化和可维护性
+### 参与投票
 
-### 7.2 性能优化
-- 数据库索引优化
-- 缓存策略
-- 连接池管理
-- 静态资源优化
+1. 在首页查看可用投票列表
+2. 点击"参与投票"按钮
+3. 选择一个选项
+4. 点击"提交投票"确认
 
-### 7.3 安全建议
-- 定期更新依赖包
-- 监控异常访问
-- 实施速率限制
-- 数据备份策略
+### 查看结果
+
+- 投票后自动跳转到结果页面
+- 可以通过首页的"查看结果"按钮查看任何投票的当前结果
+- 结果页面显示：
+  - 每个选项的得票数
+  - 投票百分比
+  - 动态进度条
+  - 总投票数
+  - 创建时间
+
+## 开发指南
+
+### 代码规范
+
+1. **Python 代码规范**
+   - 遵循 PEP 8 规范
+   - 使用有意义的变量和函数名
+   - 添加适当的注释
+   - 使用类型提示（Python 3.7+）
+
+2. **HTML/CSS 规范**
+   - 使用语义化标签
+   - 保持 CSS 类名的一致性
+   - 遵循 BEM 命名约定
+   - 优先使用 CSS Grid 和 Flexbox 布局
+
+3. **JavaScript 规范**
+   - 使用 ES6+ 特性
+   - 避免全局变量
+   - 使用事件委托优化性能
+
+### 添加新功能
+
+1. 在 `app.py` 中添加新路由
+2. 创建对应的模板文件
+3. 更新数据库模式（如需要）
+4. 添加必要的静态资源
+5. 更新文档
+
+## 安全特性
+
+1. **CSRF 保护**
+   - 所有表单都包含 CSRF 令牌
+   - 使用 Flask-WTF 中间件
+
+2. **输入验证**
+   - 服务器端验证所有输入
+   - 使用参数化 SQL 查询防止注入
+
+3. **防重复投票机制**
+   - 基于IP地址的投票追踪
+   - 24小时投票时间限制
+   - 支持代理服务器场景（X-Forwarded-For）
+   - 使用数据库事务确保数据一致性
+   - 优化的数据库索引提升查询性能
+
+4. **错误处理**
+   - 优雅的错误页面
+   - 详细的日志记录
+
+5. **数据完整性**
+   - 使用外键约束确保数据关系完整性
+   - 使用事务处理保证投票操作的原子性
+   - 记录详细的投票历史用于审计
+
+## 部署指南
+
+### 开发环境
+- 使用 Flask 内置服务器
+- DEBUG 模式开启
+- SQLite 数据库
+
+### 生产环境建议
+1. **Web 服务器**
+   - 使用 Gunicorn 或 uWSGI
+   - 配置 Nginx 反向代理
+   - 启用 HTTPS
+
+2. **数据库**
+   - 考虑使用 PostgreSQL
+   - 定期备份数据
+   - 优化数据库配置
+
+3. **安全设置**
+   - 关闭 DEBUG 模式
+   - 设置安全的 SECRET_KEY
+   - 配置 CORS 策略
+
+4. **监控**
+   - 设置日志记录
+   - 配置错误报告
+   - 监控系统资源
+
+## 维护指南
+
+### 日常维护
+1. 定期更新依赖包
+2. 检查日志文件
+3. 清理过期数据
+4. 优化数据库
+
+### 故障排除
+1. 检查日志文件
+2. 验证数据库连接
+3. 确认文件权限
+4. 测试网络连接
+
+### 性能优化
+1. 使用数据库索引
+2. 实现缓存机制
+3. 优化静态资源
+4. 监控响应时间
 
 ## 8. 故障排除
 

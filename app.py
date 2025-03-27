@@ -141,16 +141,45 @@ def vote(poll_id):
     if not options:
         abort(404)
     
+    # 获取用户IP地址
+    ip_address = request.remote_addr
+    if request.headers.get('X-Forwarded-For'):
+        ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
+    
+    # 检查用户是否在24小时内已经投过票
+    last_vote = db.execute('''
+        SELECT voted_at FROM vote_records 
+        WHERE poll_id = ? AND ip_address = ? 
+        AND voted_at > datetime('now', '-1 day')
+        ORDER BY voted_at DESC LIMIT 1
+    ''', [poll_id, ip_address]).fetchone()
+    
+    has_voted = last_vote is not None
+    
     if request.method == 'POST':
+        if has_voted:
+            flash('您在24小时内已经参与过这个投票了，请稍后再试')
+            return redirect(url_for('results', poll_id=poll_id))
+            
         option_id = request.form.get('option')
         if not option_id:
             flash('请选择一个选项')
             return render_template('vote.html', poll=poll, options=options)
         
         try:
-            # 更新投票数
-            db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?',
+            # 开始事务
+            db.execute('BEGIN TRANSACTION')
+            
+            # 更新选项票数
+            db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?', 
                       [option_id, poll_id])
+            
+            # 记录投票历史
+            db.execute('''
+                INSERT INTO vote_records (poll_id, option_id, ip_address)
+                VALUES (?, ?, ?)
+            ''', [poll_id, option_id, ip_address])
+            
             db.commit()
             flash('投票成功！')
             return redirect(url_for('results', poll_id=poll_id))
@@ -211,4 +240,4 @@ def init_db_command():
     print('数据库初始化完成.')
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
