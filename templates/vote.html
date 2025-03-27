@@ -7,7 +7,6 @@
         <h2>{{ poll.question }}</h2>
         
         <form method="post" class="vote-form">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             {% for option in options %}
             <div class="option-radio">
                 <input type="radio" 

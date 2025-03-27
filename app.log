@@ -1,4 +1,4 @@
-[2025-03-27 22:36:14,895] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:36:14,895] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -10,7 +10,7 @@ Traceback (most recent call last):
     options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
-[2025-03-27 22:38:56,947] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:38:56,947] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -22,7 +22,7 @@ Traceback (most recent call last):
     options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
-[2025-03-27 22:40:01,474] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:40:01,474] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -31,10 +31,10 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Code\vote\app.py", line 97, in vote
-    # ¼ì²éÓÃ»§ÊÇ·ñÒÑ¾­Í¶¹ýÆ±
+    # ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½Í¶ï¿½ï¿½Æ±
               ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
-[2025-03-27 22:40:15,739] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:40:15,739] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -43,10 +43,10 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Code\vote\app.py", line 97, in vote
-    # ¼ì²éÓÃ»§ÊÇ·ñÒÑ¾­Í¶¹ýÆ±
+    # ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½Í¶ï¿½ï¿½Æ±
               ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
-[2025-03-27 22:40:51,119] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:40:51,119] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -55,10 +55,10 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Code\vote\app.py", line 97, in vote
-    # ¼ì²éÓÃ»§ÊÇ·ñÒÑ¾­Í¶¹ýÆ±
+    # ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½Í¶ï¿½ï¿½Æ±
               ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
-[2025-03-27 22:40:52,659] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:40:52,659] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -67,10 +67,10 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Code\vote\app.py", line 97, in vote
-    # ¼ì²éÓÃ»§ÊÇ·ñÒÑ¾­Í¶¹ýÆ±
+    # ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½Í¶ï¿½ï¿½Æ±
               ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
-[2025-03-27 22:41:17,390] ERROR in app: Î´´¦ÀíµÄÒì³£: no such table: voter_ips
+[2025-03-27 22:41:17,390] ERROR in app: Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£: no such table: voter_ips
 Traceback (most recent call last):
   File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
     rv = self.dispatch_request()
@@ -79,6 +79,6 @@ Traceback (most recent call last):
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Code\vote\app.py", line 97, in vote
-    # ¼ì²éÓÃ»§ÊÇ·ñÒÑ¾­Í¶¹ýÆ±
+    # ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½Í¶ï¿½ï¿½Æ±
               ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
