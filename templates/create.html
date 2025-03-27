@@ -5,7 +5,6 @@
 {% block content %}
     <h2>创建新投票</h2>
     <form method="post" class="create-poll-form">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label for="question">投票问题：</label>
             <input type="text" id="question" name="question" required 
@@ -45,7 +44,6 @@
             const optionCount = container.children.length;
             const newOption = document.createElement('div');
             newOption.className = 'option-input';
-            const csrfToken = document.querySelector('input[name="csrf_token"]').value;
             newOption.innerHTML = `
                 <input type="text" name="options[]" required placeholder="选项${optionCount + 1}">
                 <button type="button" class="remove-option" onclick="this.parentElement.remove()">删除</button>
