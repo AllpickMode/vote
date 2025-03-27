@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, g, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 
 app = Flask(__name__)
@@ -80,6 +80,10 @@ def create():
 
 @app.route('/vote/<int:poll_id>', methods=['GET', 'POST'])
 def vote(poll_id):
+    # 初始化session中的voted_polls（如果不存在）
+    if 'voted_polls' not in session:
+        session['voted_polls'] = []
+    
     db = get_db()
     poll = db.execute('SELECT * FROM polls WHERE id = ?', [poll_id]).fetchone()
     
@@ -90,22 +94,34 @@ def vote(poll_id):
     if not options:
         abort(404)
     
+    # 检查用户是否已经投过票
+    has_voted = poll_id in session['voted_polls']
+    
     if request.method == 'POST':
+        if has_voted:
+            flash('您已经参与过这个投票了')
+            return redirect(url_for('results', poll_id=poll_id))
+            
         option_id = request.form.get('option')
         if not option_id:
             flash('请选择一个选项')
-            return render_template('vote.html', poll=poll, options=options)
+            return render_template('vote.html', poll=poll, options=options, has_voted=has_voted)
         
         try:
             db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?', 
                       [option_id, poll_id])
             db.commit()
+            # 记录用户已投票
+            voted_polls = session['voted_polls']
+            voted_polls.append(poll_id)
+            session['voted_polls'] = voted_polls
+            flash('投票成功！')
             return redirect(url_for('results', poll_id=poll_id))
         except sqlite3.Error:
             db.rollback()
             flash('投票失败，请稍后重试')
     
-    return render_template('vote.html', poll=poll, options=options)
+    return render_template('vote.html', poll=poll, options=options, has_voted=has_voted)
 
 @app.route('/results/<int:poll_id>')
 def results(poll_id):
