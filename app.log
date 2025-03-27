@@ -1,0 +1,60 @@
+[2025-03-27 21:57:51,881] ERROR in app: 未处理的异常: no such table: voter_ips
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 97, in vote
+    # 路由
+           
+sqlite3.OperationalError: no such table: voter_ips
+[2025-03-27 21:57:54,317] ERROR in app: 未处理的异常: no such table: voter_ips
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 97, in vote
+    # 路由
+           
+sqlite3.OperationalError: no such table: voter_ips
+[2025-03-27 21:57:59,792] ERROR in app: 未处理的异常: no such table: voter_ips
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 97, in vote
+    # 路由
+           
+sqlite3.OperationalError: no such table: voter_ips
+[2025-03-27 21:58:01,064] ERROR in app: 未处理的异常: no such table: voter_ips
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 97, in vote
+    # 路由
+           
+sqlite3.OperationalError: no such table: voter_ips
+[2025-03-27 21:58:14,696] ERROR in app: 未处理的异常: no such table: voter_ips
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 97, in vote
+    # 路由
+           
+sqlite3.OperationalError: no such table: voter_ips
