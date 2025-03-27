@@ -240,6 +240,10 @@ nav ul a:hover {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.results-list {
+    margin-top: 2rem;
+}
+
 .result-item {
     margin-bottom: 1.5rem;
 }
@@ -248,6 +252,14 @@ nav ul a:hover {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
+}
+
+.option-text {
+    font-weight: 500;
+}
+
+.vote-count {
+    color: var(--secondary-color);
 }
 
 .progress-bar {
@@ -275,6 +287,11 @@ nav ul a:hover {
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
     color: var(--secondary-color);
+}
+
+.created-time {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
 }
 
 .results-actions {
