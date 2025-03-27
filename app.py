@@ -28,7 +28,7 @@ def close_db(error):
 def init_db():
     with app.app_context():
         db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
+        with open('schema.sql', 'r', encoding='utf-8') as f:
             db.executescript(f.read())
         db.commit()
 
@@ -80,10 +80,6 @@ def create():
 
 @app.route('/vote/<int:poll_id>', methods=['GET', 'POST'])
 def vote(poll_id):
-    # 初始化session中的voted_polls（如果不存在）
-    if 'voted_polls' not in session:
-        session['voted_polls'] = []
-    
     db = get_db()
     poll = db.execute('SELECT * FROM polls WHERE id = ?', [poll_id]).fetchone()
     
@@ -94,12 +90,24 @@ def vote(poll_id):
     if not options:
         abort(404)
     
-    # 检查用户是否已经投过票
-    has_voted = poll_id in session['voted_polls']
+    # 获取用户IP地址
+    ip_address = request.remote_addr
+    if request.headers.get('X-Forwarded-For'):
+        ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
+    
+    # 检查用户是否在24小时内已经投过票
+    last_vote = db.execute('''
+        SELECT voted_at FROM vote_records 
+        WHERE poll_id = ? AND ip_address = ? 
+        AND voted_at > datetime('now', '-1 day')
+        ORDER BY voted_at DESC LIMIT 1
+    ''', [poll_id, ip_address]).fetchone()
+    
+    has_voted = last_vote is not None
     
     if request.method == 'POST':
         if has_voted:
-            flash('您已经参与过这个投票了')
+            flash('您在24小时内已经参与过这个投票了，请稍后再试')
             return redirect(url_for('results', poll_id=poll_id))
             
         option_id = request.form.get('option')
@@ -108,13 +116,20 @@ def vote(poll_id):
             return render_template('vote.html', poll=poll, options=options, has_voted=has_voted)
         
         try:
+            # 开始事务
+            db.execute('BEGIN TRANSACTION')
+            
+            # 更新选项票数
             db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?', 
                       [option_id, poll_id])
+            
+            # 记录投票历史
+            db.execute('''
+                INSERT INTO vote_records (poll_id, option_id, ip_address)
+                VALUES (?, ?, ?)
+            ''', [poll_id, option_id, ip_address])
+            
             db.commit()
-            # 记录用户已投票
-            voted_polls = session['voted_polls']
-            voted_polls.append(poll_id)
-            session['voted_polls'] = voted_polls
             flash('投票成功！')
             return redirect(url_for('results', poll_id=poll_id))
         except sqlite3.Error:
