@@ -4,8 +4,12 @@ DROP TABLE IF EXISTS options;
 CREATE TABLE polls (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 为现有数据添加created_at时间戳（假设投票按id顺序创建）
+UPDATE polls SET created_at = DATETIME('now', '-' || id || ' minutes') 
+WHERE created_at IS NULL;
 
 CREATE TABLE options (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

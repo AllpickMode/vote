@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - 投票系统</title>
+    <link rel="icon" href="{{ url_for('static', filename='icons/vote-icon.svg') }}" type="image/svg+xml">
+    <title>{% block title %}{% endblock %} - Vote App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <h1><a href="{{ url_for('index') }}">投票系统</a></h1>
-            <ul>
-                <li><a href="{{ url_for('index') }}">首页</a></li>
-                <li><a href="{{ url_for('create') }}">创建投票</a></li>
+    <nav class="main-nav">
+        <div class="nav-container container">
+            <div class="nav-brand">
+                <a href="{{ url_for('index') }}" class="logo-link">
+                    <img src="{{ url_for('static', filename='icons/vote-icon.svg') }}" 
+                         alt="投票系统图标" 
+                         class="nav-logo"
+                         width="40" 
+                         height="40">
+                </a>
+                <h1 class="site-title"><a href="{{ url_for('index') }}">投票系统</a></h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link">首页</a></li>
+                <li class="nav-item"><a href="{{ url_for('create') }}" class="nav-link">创建投票</a></li>
             </ul>
         </div>
     </nav>

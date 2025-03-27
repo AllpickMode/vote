@@ -36,7 +36,7 @@ def init_db():
 @app.route('/')
 def index():
     db = get_db()
-    polls = db.execute('SELECT * FROM polls ORDER BY created_at DESC').fetchall()
+    polls = db.execute('SELECT * FROM polls ORDER BY id DESC').fetchall()
     return render_template('index.html', polls=polls)
 
 @app.route('/create', methods=['GET', 'POST'])
