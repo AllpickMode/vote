@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}参与投票{% endblock %}
+
+{% block content %}
+    <div class="vote-container">
+        <h2>{{ poll.question }}</h2>
+        
+        <form method="post" class="vote-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            {% for option in options %}
+            <div class="option-radio">
+                <input type="radio" 
+                       id="option{{ option.id }}" 
+                       name="option" 
+                       value="{{ option.id }}" 
+                       required>
+                <label for="option{{ option.id }}" class="radio-label">
+                    {{ option.option_text }}
+                </label>
+            </div>
+            {% endfor %}
+            
+            <div class="form-actions">
+                <button type="submit" class="button">提交投票</button>
+                <a href="{{ url_for('results', poll_id=poll.id) }}" class="button secondary">查看结果</a>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .radio-label {
+            display: block;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-radio input[type="radio"] {
+            display: none;
+        }
+
+        .option-radio input[type="radio"]:checked + .radio-label {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .radio-label:hover {
+            background-color: var(--background-color);
+        }
+    </style>
+{% endblock %}
