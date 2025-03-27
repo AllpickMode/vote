@@ -98,7 +98,7 @@ def vote(poll_id):
         '''SELECT 1 FROM voter_ips 
         WHERE poll_id = ? 
         AND ip_address = ?
-        AND datetime(timestamp) > datetime('now', '-24 hours')''',
+        AND timestamp >= datetime('now', '-24 hours')''',
         [poll_id, client_ip]
     ).fetchone() is not None
     
