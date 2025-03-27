@@ -11,7 +11,8 @@
 
 - **投票参与**
   - 直观的单选界面
-  - 防止重复投票（基于会话）
+  - 防止重复投票（基于IP地址和时间限制）
+  - 24小时投票限制
   - 实时提交反馈
 
 - **结果展示**
@@ -62,6 +63,23 @@ CREATE TABLE options (
     votes INTEGER DEFAULT 0,
     FOREIGN KEY (poll_id) REFERENCES polls (id)
 );
+```
+
+#### vote_records 表
+```sql
+CREATE TABLE vote_records (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    poll_id INTEGER NOT NULL,
+    option_id INTEGER NOT NULL,
+    ip_address TEXT NOT NULL,
+    voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (poll_id) REFERENCES polls (id),
+    FOREIGN KEY (option_id) REFERENCES options (id)
+);
+
+-- 优化索引
+CREATE INDEX idx_vote_records_poll_ip ON vote_records(poll_id, ip_address);
+CREATE INDEX idx_vote_records_time ON vote_records(voted_at);
 ```
 
 ## 文件结构
@@ -200,13 +218,21 @@ python app.py
    - 服务器端验证所有输入
    - 使用参数化 SQL 查询防止注入
 
-3. **会话管理**
-   - 基于会话的重复投票预防
-   - 安全的会话配置
+3. **防重复投票机制**
+   - 基于IP地址的投票追踪
+   - 24小时投票时间限制
+   - 支持代理服务器场景（X-Forwarded-For）
+   - 使用数据库事务确保数据一致性
+   - 优化的数据库索引提升查询性能
 
 4. **错误处理**
    - 优雅的错误页面
    - 详细的日志记录
+
+5. **数据完整性**
+   - 使用外键约束确保数据关系完整性
+   - 使用事务处理保证投票操作的原子性
+   - 记录详细的投票历史用于审计
 
 ## 部署指南
 
