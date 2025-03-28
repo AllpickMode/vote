@@ -374,6 +374,85 @@ label {
 .polls-list {
     display: grid;
     gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* 投票项目卡片样式 */
+.poll-item {
+    background: white;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.poll-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+/* 投票标题区域 */
+.poll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.poll-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    flex: 1;
+    line-height: 1.4;
+}
+
+/* 投票元信息样式 */
+.poll-meta {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+.poll-timestamps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.created-time, .vote-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* 图标样式 */
+.icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+/* 投票操作区域 */
+.poll-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.poll-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.poll-actions .btn .icon {
+    opacity: 1;
 }
 
 /* 投票选项样式 */
@@ -605,6 +684,33 @@ label {
     .poll-item:hover {
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         border-color: var(--primary);
+    }
+
+    /* 投票标题和元信息深色模式 */
+    .poll-title {
+        color: var(--text);
+    }
+
+    .poll-meta {
+        color: var(--text-light);
+    }
+
+    .icon {
+        opacity: 0.8;
+    }
+
+    .created-time, .vote-time {
+        color: var(--text-light);
+    }
+
+    /* 按钮图标深色模式 */
+    .poll-actions .btn .icon {
+        opacity: 1;
+    }
+
+    /* 投票状态徽章深色模式调整 */
+    .badge {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     /* 表单元素深色模式 */
