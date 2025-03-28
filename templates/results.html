@@ -32,8 +32,13 @@
     </div>
     
     <div class="actions">
-        <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn primary">继续投票</a>
-        <a href="{{ url_for('index') }}" class="btn">返回首页</a>
+        <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+            继续投票
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">返回首页</a>
     </div>
 
     <script>

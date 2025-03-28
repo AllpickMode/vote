@@ -19,7 +19,13 @@
                         <div>
                             <input type="text" name="options[]" value="{{ option }}" required>
                             {% if not loop.first %}
-                                <button type="button" onclick="this.parentElement.remove()">删除</button>
+                                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                    删除
+                                </button>
                             {% endif %}
                         </div>
                     {% endfor %}
@@ -28,10 +34,21 @@
                     <div><input type="text" name="options[]" required placeholder="选项2"></div>
                 {% endif %}
             </div>
-            <button type="button" onclick="addOption()" class="btn secondary">添加选项</button>
+            <button type="button" onclick="addOption()" class="btn btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                添加选项
+            </button>
         </div>
 
-        <button type="submit" class="btn primary">创建投票</button>
+        <button type="submit" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+            创建投票
+        </button>
     </form>
 
     <script>
@@ -41,7 +58,13 @@
             div.innerHTML = `
                 <input type="text" name="options[]" required 
                        placeholder="选项${container.children.length + 1}">
-                <button type="button" onclick="this.parentElement.remove()">删除</button>
+                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    删除
+                </button>
             `;
             container.appendChild(div);
         };

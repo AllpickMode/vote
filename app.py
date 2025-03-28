@@ -97,6 +97,11 @@ def convert_to_local_time(utc_time_str):
     local_time = utc_time.astimezone(local_tz)
     return local_time.strftime('%Y-%m-%d %H:%M')
 
+# 为所有模板提供now变量
+@app.context_processor
+def inject_now():
+    return {'now': datetime.now()}
+
 # 路由
 @app.route('/')
 def index():

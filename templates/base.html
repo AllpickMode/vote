@@ -3,10 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="一个简单易用的在线投票系统">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="{{ url_for('static', filename='icons/vote-icon.svg') }}" type="image/svg+xml">
+    <link rel="preload" href="{{ url_for('static', filename='style.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='icons/vote-icon.svg') }}" as="image" type="image/svg+xml">
     <title>{% block title %}{% endblock %} - Vote App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+</head>
+<body>
+    <nav class="main-nav" role="navigation" aria-label="主导航">
+        <div class="nav-container container">
+            <a href="{{ url_for('index') }}" class="nav-brand" aria-label="返回首页">
+                <img src="{{ url_for('static', filename='icons/vote-icon.svg') }}" alt="投票系统图标" width="40" height="40">
+                <h1>投票系统</h1>
+            </a>
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="{{ url_for('index') }}" role="menuitem" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>首页</a></li>
+                <li role="none"><a href="{{ url_for('create') }}" role="menuitem" {% if request.endpoint == 'create' %}aria-current="page"{% endif %}>创建投票</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container" role="main">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages" role="alert" aria-live="polite">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="content-wrapper">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; {{ now.year }} 投票系统. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <!-- 将JavaScript移到底部以提高页面加载性能 -->
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js" defer></script>
     <script>
         async function getBrowserFingerprint() {
             try {
@@ -19,33 +62,5 @@
             }
         }
     </script>
-</head>
-<body>
-    <nav class="main-nav">
-        <div class="nav-container container">
-            <div class="nav-brand">
-                <a href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='icons/vote-icon.svg') }}" alt="投票系统" width="40" height="40">
-                    <h1>投票系统</h1>
-                </a>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="{{ url_for('index') }}">首页</a></li>
-                <li><a href="{{ url_for('create') }}">创建投票</a></li>
-            </ul>
-        </div>
-    </nav>
-    <main class="container">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="flash-message">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </main>
 </body>
 </html>

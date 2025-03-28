@@ -18,10 +18,10 @@
                     </div>
                     <div class="poll-actions">
                         {% if poll.has_voted %}
-                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn primary">查看结果</a>
+                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn btn-primary">查看结果</a>
                         {% else %}
-                            <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn">参与投票</a>
-                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn secondary">查看结果</a>
+                            <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn btn-primary">参与投票</a>
+                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn btn-secondary">查看结果</a>
                         {% endif %}
                     </div>
                     <time>创建时间: {{ poll.created_at }}</time>
@@ -31,7 +31,7 @@
     {% else %}
         <div class="empty-state">
             <p>目前还没有投票。</p>
-            <a href="{{ url_for('create') }}" class="btn">创建第一个投票</a>
+            <a href="{{ url_for('create') }}" class="btn btn-primary">创建第一个投票</a>
         </div>
     {% endif %}
 {% endblock %}
