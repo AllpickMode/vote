@@ -37,10 +37,10 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 50%;
     margin: 0 auto;
     padding: 0 1.5rem;
-    width: 100%;
+    width: 50%;
 }
 
 main {
@@ -68,8 +68,6 @@ main {
     background: white;
     padding: clamp(1.5rem, 3vw, 2rem);
     border-radius: var(--radius-lg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    width: min(calc(100% - 2rem), 800px);
     margin: 1.5rem auto;
     position: relative;
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -459,7 +457,6 @@ form {
     padding: clamp(1.5rem, 3vw, 2rem);
     border-radius: var(--radius-lg);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    width: min(calc(100% - 2rem), 800px);
     margin: 1.5rem auto;
     border: 1px solid rgba(0, 0, 0, 0.06);
 }
@@ -619,7 +616,6 @@ form button[type="submit"] {
     margin: 2rem auto;
     justify-content: center;
     align-items: center;
-    width: min(calc(100% - 2rem), 800px);
     flex-wrap: wrap;
 }
 
@@ -630,7 +626,6 @@ form button[type="submit"] {
     border-radius: var(--radius-lg);
     background: white;
     border: 1px solid rgba(var(--primary-rgb), 0.1);
-    width: min(calc(100% - 2rem), 800px);
     display: flex;
     justify-content: space-around;
     align-items: stretch;
@@ -712,6 +707,11 @@ form button[type="submit"] {
 
 
 @media (max-width: 640px) {
+    .container, .results, form, .actions, .summary {
+        max-width: 95%;
+        width: 95%;
+    }
+
     .page-title {
         font-size: 1.5rem;
         margin: 1.5rem 0;
