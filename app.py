@@ -100,8 +100,9 @@ def index():
         # 检查是否投过票（不限时间）
         last_vote = db.execute('''
             SELECT voted_at FROM vote_records 
-            WHERE poll_id = ? AND (ip_address = ? OR browser_fingerprint IN (
-                SELECT browser_fingerprint FROM vote_records 
+            WHERE poll_id = ? 
+            AND (ip_address = ? OR browser_fingerprint IN (
+                SELECT DISTINCT browser_fingerprint FROM vote_records 
                 WHERE poll_id = ? AND ip_address = ?
             ))
             ORDER BY voted_at DESC LIMIT 1
@@ -177,31 +178,23 @@ def vote(poll_id):
     if request.headers.get('X-Forwarded-For'):
         ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
     
-    # 检查用户是否已经投过票（不限时间）
-    if request.method == 'POST':
-        # POST请求时检查IP和指纹
-        last_vote = db.execute('''
-            SELECT voted_at FROM vote_records 
-            WHERE poll_id = ? 
-            AND (ip_address = ? OR browser_fingerprint = ? OR browser_fingerprint IN (
-                SELECT browser_fingerprint FROM vote_records 
-                WHERE poll_id = ? AND ip_address = ?
-            ))
-            ORDER BY voted_at DESC LIMIT 1
-        ''', [poll_id, ip_address, request.form.get('fingerprint', ''), poll_id, ip_address]).fetchone()
-    else:
-        # GET请求时检查IP和关联的指纹
-        last_vote = db.execute('''
-            SELECT voted_at FROM vote_records 
-            WHERE poll_id = ? 
-            AND (ip_address = ? OR browser_fingerprint IN (
-                SELECT browser_fingerprint FROM vote_records 
-                WHERE poll_id = ? AND ip_address = ?
-            ))
-            ORDER BY voted_at DESC LIMIT 1
-        ''', [poll_id, ip_address, poll_id, ip_address]).fetchone()
+    # 检查用户是否已经投过票
+    last_vote = db.execute('''
+        SELECT voted_at FROM vote_records 
+        WHERE poll_id = ? 
+        AND (ip_address = ? OR browser_fingerprint IN (
+            SELECT DISTINCT browser_fingerprint FROM vote_records 
+            WHERE poll_id = ? AND ip_address = ?
+        ))
+        ORDER BY voted_at DESC LIMIT 1
+    ''', [poll_id, ip_address, poll_id, ip_address]).fetchone()
     
     has_voted = last_vote is not None
+    
+    # 如果已经投过票，直接重定向到结果页面
+    if has_voted:
+        flash('您已经参与过这个投票了')
+        return redirect(url_for('results', poll_id=poll_id))
     
     if request.method == 'POST':
         if not request.form.get('fingerprint'):

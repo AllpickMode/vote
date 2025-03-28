@@ -55,30 +55,38 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const form = document.getElementById('voteForm');
             const fingerprintInput = document.getElementById('fingerprintInput');
+
+            try {
+                // 获取浏览器指纹
+                const fingerprint = await getBrowserFingerprint();
+                if (!fingerprint) {
+                    alert('无法获取浏览器指纹，请确保启用了JavaScript并允许相关权限。');
+                    window.location.href = "{{ url_for('index') }}";
+                    return;
+                }
+                
+                // 设置指纹到隐藏字段
+                fingerprintInput.value = fingerprint;
+            } catch (error) {
+                console.error('获取浏览器指纹时出错:', error);
+                alert('无法验证投票资格，请稍后重试。');
+                window.location.href = "{{ url_for('index') }}";
+                return;
+            }
 
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                try {
-                    // 获取浏览器指纹
-                    const fingerprint = await getBrowserFingerprint();
-                    if (!fingerprint) {
-                        alert('无法获取浏览器指纹，请确保启用了JavaScript并允许相关权限。');
-                        return;
-                    }
-                    
-                    // 设置指纹到隐藏字段
-                    fingerprintInput.value = fingerprint;
-                    
-                    // 提交表单
-                    form.submit();
-                } catch (error) {
-                    console.error('获取浏览器指纹时出错:', error);
-                    alert('提交失败，请稍后重试。');
+                if (!fingerprintInput.value) {
+                    alert('无法验证浏览器指纹，请确保启用了JavaScript并允许相关权限。');
+                    return;
                 }
+                
+                // 提交表单
+                form.submit();
             });
         });
     </script>
