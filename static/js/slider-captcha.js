@@ -55,6 +55,19 @@ class SliderCaptcha {
             
             this.slider.style.left = `${moveX}px`;
             currentX = moveX;
+            
+            // 重绘Canvas
+            this.ctx.clearRect(0, 0, this.options.width, this.options.height);
+            this.drawBackground();
+            
+            // 绘制目标位置的方块（半透明）
+            const y = this.options.height / 2 - this.options.sliderHeight / 2;
+            this.ctx.fillStyle = '#75b83e80';
+            this.ctx.fillRect(this.targetPos, y, this.options.sliderWidth, this.options.sliderHeight);
+            
+            // 绘制当前滑块位置的方块
+            this.ctx.fillStyle = '#75b83e';
+            this.ctx.fillRect(moveX, y, this.options.sliderWidth, this.options.sliderHeight);
         };
 
         const upHandler = () => {
