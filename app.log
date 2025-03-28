@@ -118,3 +118,25 @@ Traceback (most recent call last):
     last_vote = db.execute('''
                 ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such column: browser_fingerprint
+2025-03-28 11:18:38,790 ERROR: 未处理的异常: No module named 'pytz' [in C:\Code\vote\app.py:286]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in index
+    import pytz
+ModuleNotFoundError: No module named 'pytz'
+2025-03-28 11:18:42,178 ERROR: 未处理的异常: No module named 'pytz' [in C:\Code\vote\app.py:286]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in index
+    import pytz
+ModuleNotFoundError: No module named 'pytz'

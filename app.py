@@ -112,10 +112,20 @@ def index():
         poll_info = dict(poll)
         poll_info['has_voted'] = last_vote is not None
         if last_vote:
-            # 格式化时间为更友好的显示
+            # 格式化时间为更友好的显示，并处理时区
             from datetime import datetime
+            import pytz
+            
+            # 创建时区对象
+            local_tz = pytz.timezone('Asia/Shanghai')  # 使用中国时区
+            
+            # 解析时间并添加UTC时区信息
             voted_time = datetime.strptime(last_vote['voted_at'], '%Y-%m-%d %H:%M:%S')
-            poll_info['vote_time'] = voted_time.strftime('%Y-%m-%d %H:%M')
+            voted_time = pytz.utc.localize(voted_time)
+            
+            # 转换到本地时区
+            local_time = voted_time.astimezone(local_tz)
+            poll_info['vote_time'] = local_time.strftime('%Y-%m-%d %H:%M')
         else:
             poll_info['vote_time'] = None
         polls_with_status.append(poll_info)
