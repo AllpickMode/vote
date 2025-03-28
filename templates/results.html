@@ -14,9 +14,7 @@
             {% set percentage = ((option.votes | float) / total_votes.value * 100) if total_votes.value > 0 else 0 %}
             <div class="result">
                 <div class="result-header">
-                    <span class="option-text">{{ option.option_text }}</span>
-                    <span class="vote-count">{{ option.votes }} 票</span>
-                    <span class="progress-stats">{{ "%.1f"|format(percentage) }}%</span>
+                    <span class="option-text">{{ option.option_text }} <span class="vote-count">{{ option.votes }} 票</span> <span class="progress-stats">{{ "%.1f"|format(percentage) }}%</span></span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-track">

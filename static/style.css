@@ -176,6 +176,10 @@ main {
     flex: 1;
     min-width: 200px;
     line-height: 1.4;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .vote-count,
@@ -184,14 +188,16 @@ main {
     font-weight: 600;
     color: var(--primary);
     background: rgba(var(--primary-rgb), 0.1);
-    padding: 0.5rem 1.25rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 2rem;
-    min-width: 4.5rem;
+    min-width: auto;
     text-align: center;
     white-space: nowrap;
     box-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.1);
     transition: all 0.3s ease;
     border: 1px solid rgba(var(--primary-rgb), 0.1);
+    display: inline-flex;
+    align-items: center;
 }
 
 .vote-count:hover,
