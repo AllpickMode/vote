@@ -19,11 +19,13 @@
                         <span class="option-text">{{ option.option_text }}</span>
                         <span class="vote-count">{{ option.votes }} 票</span>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: {{ percentage }}%"></div>
-                    </div>
-                    <div class="percentage">
-                        {{ "%.1f"|format(percentage) }}%
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: {{ percentage }}%"></div>
+                        </div>
+                        <div class="percentage">
+                            {{ "%.1f"|format(percentage) }}%
+                        </div>
                     </div>
                 </div>
             {% endfor %}
