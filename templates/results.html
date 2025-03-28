@@ -4,7 +4,6 @@
 
 {% block content %}
     <h2>{{ poll.question }}</h2>
-    
     {% set total_votes = namespace(value=0) %}
     {% for option in options %}
         {% set total_votes.value = total_votes.value + option.votes %}
@@ -17,13 +16,11 @@
                 <div class="result-header">
                     <span class="option-text">{{ option.option_text }}</span>
                     <span class="vote-count">{{ option.votes }} 票</span>
+                    <span class="progress-stats">{{ "%.1f"|format(percentage) }}%</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-track">
                         <div class="progress" style="width: {{ percentage }}%; transition: width 0.8s ease-in-out"></div>
-                    </div>
-                    <div class="progress-stats">
-                        <span>{{ "%.1f"|format(percentage) }}%</span>
                     </div>
                 </div>
             </div>

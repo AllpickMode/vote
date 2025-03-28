@@ -16,6 +16,7 @@
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary-rgb: 59, 130, 246;
 }
 
 * {
@@ -36,11 +37,10 @@ body {
 }
 
 .container {
-    max-width: 50%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 1.5rem;
     width: 100%;
-    min-width: 320px;
 }
 
 main {
@@ -48,97 +48,537 @@ main {
     padding: 2rem 0;
 }
 
-.content-wrapper {
+/* 投票结果页面样式 */
+.content-wrapper h2 {
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--text);
     margin: 2rem 0;
+    font-weight: 600;
+    position: relative;
+    background: linear-gradient(to right, var(--primary), var(--text));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.1);
 }
 
-/* 导航栏现代化 */
-.main-nav {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+/* 投票结果页面核心样式优化 */
+.results {
+    background: white;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    width: min(calc(100% - 2rem), 800px);
+    margin: 1.5rem auto;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.results:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.results {
+    border-top: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+.results::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(to bottom right, 
+        rgba(var(--primary-rgb), 0.1),
+        transparent 40%);
+    pointer-events: none;
+}
+
+.results h2 {
+    text-align: center;
+    margin: 0.5rem 0 2rem;
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    color: var(--text);
+    font-weight: 600;
+    padding: 0 1rem;
+    word-break: break-word;
+    line-height: 1.4;
+    position: relative;
+}
+
+.results h2::after {
+    content: '';
+    position: absolute;
+    bottom: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3rem;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    border-radius: 3px;
+}
+
+.result {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(1.25rem, 2.5vw, 1.5rem);
+    margin-bottom: 1.25rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.result:hover {
+    border-color: var(--primary);
     box-shadow: var(--shadow);
-    padding: 1rem 0;
-    margin-bottom: 2rem;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.result::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(var(--primary-rgb), 0.05) 50%,
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.result:hover::after {
+    opacity: 1;
+}
+
+.result:last-child {
+    margin-bottom: 0;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.option-text {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+    min-width: 200px;
+    line-height: 1.4;
+}
+
+.vote-count,
+.progress-stats {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 600;
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    min-width: 4.5rem;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+}
+
+.vote-count:hover,
+.progress-stats:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(var(--primary-rgb), 0.15);
+    background: rgba(var(--primary-rgb), 0.15);
+}
+
+.progress-bar {
+    margin: 0.75rem 0 0.5rem;
+}
+
+.progress-track {
+    background: rgba(var(--primary-rgb), 0.1);
+    border-radius: 1rem;
+    height: 0.875rem;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.progress {
+    background: linear-gradient(
+        45deg,
+        var(--primary-light),
+        var(--primary),
+        var(--primary-dark)
+    );
+    height: 100%;
+    border-radius: 1rem;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background-size: 200% 100%;
+    animation: gradientMove 3s linear infinite;
+    box-shadow: 0 1px 2px rgba(var(--primary-rgb), 0.3);
+}
+
+.progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}
+
+/* 导航栏样式 */
+.main-nav {
+    background: white;
+    box-shadow: var(--shadow);
     position: sticky;
     top: 0;
-    z-index: 10;
-    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
 }
 
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;
+    padding: 1rem 1.5rem;
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
     text-decoration: none;
     color: var(--text);
-    font-weight: 600;
-    transition: var(--transition);
-}
-
-.nav-brand:hover {
-    color: var(--primary);
-}
-
-.nav-brand img {
-    width: 40px;
-    height: 40px;
-    transition: var(--transition);
-}
-
-.nav-brand:hover img {
-    transform: scale(1.05);
 }
 
 .nav-brand h1 {
     font-size: 1.5rem;
-    margin: 0;
+    font-weight: 600;
 }
 
 .nav-menu {
     display: flex;
+    gap: 1.5rem;
     list-style: none;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
 }
 
 .nav-menu a {
     color: var(--text);
     text-decoration: none;
     font-weight: 500;
-    transition: var(--transition);
-    position: relative;
-    padding: 0.5rem 0;
-}
-
-.nav-menu a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
     transition: var(--transition);
 }
 
-.nav-menu a:hover::after,
-.nav-menu a[aria-current="page"]::after {
-    width: 100%;
-}
-
-.nav-menu a[aria-current="page"] {
+.nav-menu a:hover {
+    background: rgba(var(--primary-rgb), 0.1);
     color: var(--primary);
 }
 
-/* 统一按钮样式 */
+.nav-menu a[aria-current="page"] {
+    background: var(--primary);
+    color: white;
+}
+
+/* 投票列表样式 */
+.polls-list {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.poll-item {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    transition: var(--transition);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.poll-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.poll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.poll-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge.voted {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+}
+
+.badge.not-voted {
+    background: rgba(var(--secondary), 0.1);
+    color: var(--secondary);
+}
+
+.poll-meta {
+    margin-bottom: 1.5rem;
+}
+
+.poll-timestamps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.created-time, .vote-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.icon {
+    opacity: 0.7;
+}
+
+.poll-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* 空状态样式 */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+.empty-state p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+/* 页面标题样式 */
+.page-title {
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--text);
+    margin: 2rem 0;
+    font-weight: 600;
+    background: linear-gradient(to right, var(--primary), var(--text));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(var(--primary-rgb), 0.1);
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary-light), var(--primary));
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+/* 创建投票表单样式 */
+form {
+    background: white;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    width: min(calc(100% - 2rem), 800px);
+    margin: 1.5rem auto;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+form > div {
+    margin-bottom: 2rem;
+}
+
+form label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    color: var(--text);
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+form input[type="text"]:hover {
+    border-color: rgba(var(--primary-rgb), 0.4);
+}
+
+form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1),
+                0 2px 4px rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+form input[type="text"]::placeholder {
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+#options-container > div {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#options-container > div:hover {
+    transform: translateY(-1px);
+}
+
+#options-container > div:hover input[type="text"] {
+    border-color: rgba(var(--primary-rgb), 0.4);
+}
+
+#options-container > div .btn-danger {
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+#options-container > div:hover .btn-danger {
+    opacity: 1;
+}
+
+#options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#options-container > div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+form button[type="submit"] {
+    margin-top: 1rem;
+}
+
+/* 按钮样式 */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -157,96 +597,58 @@ main {
     overflow: hidden;
 }
 
-/* 主要按钮 */
 .btn-primary {
     background: linear-gradient(to right, var(--primary), var(--primary-dark));
     box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
-.btn-primary:hover {
-    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
-    transform: translateY(-2px);
-}
-
-/* 次要按钮 */
 .btn-secondary {
     background: linear-gradient(to right, var(--secondary), #475569);
     box-shadow: 0 2px 4px rgba(100, 116, 139, 0.2);
 }
 
-.btn-secondary:hover {
-    box-shadow: 0 4px 6px rgba(100, 116, 139, 0.3);
+.btn:hover {
     transform: translateY(-2px);
+    box-shadow: var(--shadow);
 }
 
-/* 成功按钮 */
-.btn-success {
-    background: linear-gradient(to right, var(--success), #16a34a);
-    box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
-}
-
-.btn-success:hover {
-    box-shadow: 0 4px 6px rgba(34, 197, 94, 0.3);
-    transform: translateY(-2px);
-}
-
-/* 危险按钮 */
-.btn-danger {
-    background: linear-gradient(to right, var(--error), #dc2626);
-    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
-}
-
-.btn-danger:hover {
-    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
-    transform: translateY(-2px);
-}
-
-/* 按钮尺寸 */
-.btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-}
-
-.btn-lg {
-    padding: 1rem 2rem;
-    font-size: 1.125rem;
-}
-
-/* 按钮状态 */
-.btn:active {
-    transform: translateY(0);
-}
-
-/* 表单操作区域样式 */
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 2px solid var(--border);
-}
-
-/* 结果页面操作区域 */
+/* 操作区域样式 */
 .actions {
     display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    justify-content: flex-start;
+    gap: clamp(0.75rem, 2vw, 1rem);
+    margin: 2rem auto;
+    justify-content: center;
     align-items: center;
+    width: min(calc(100% - 2rem), 800px);
+    flex-wrap: wrap;
 }
 
-/* 投票结果摘要样式 */
+/* 总结区域样式 */
 .summary {
-    margin: 2.5rem auto;
-    padding: 2rem;
+    margin: 2rem auto;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
     border-radius: var(--radius-lg);
     background: white;
-    border: 1px solid var(--border);
-    width: 100%;
+    border: 1px solid rgba(var(--primary-rgb), 0.1);
+    width: min(calc(100% - 2rem), 800px);
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    box-shadow: var(--shadow);
+    align-items: stretch;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.summary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(var(--primary-rgb), 0.05),
+        transparent 60%
+    );
+    z-index: 1;
 }
 
 .summary p {
@@ -254,495 +656,239 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    flex: 1;
+    min-width: 160px;
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+.summary p:first-child {
+    border-right: 1px solid rgba(var(--primary-rgb), 0.1);
 }
 
 .summary p::before {
-    font-size: 1.5rem;
     font-weight: 600;
     color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+.summary p:hover::before {
+    transform: scale(1.1);
 }
 
 .summary p:first-child::before {
     content: attr(data-votes);
-    font-size: 2rem;
+    font-size: clamp(2.5rem, 6vw, 3rem);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(var(--primary-rgb), 0.2);
+    letter-spacing: -0.05em;
 }
 
 .summary p:last-child::before {
     content: attr(data-time);
-}
-
-/* 定义主色调的RGB值，用于透明度调整 */
-:root {
-    --primary-rgb: 59, 130, 246;
-}
-
-/* 操作按钮区域样式 */
-.actions {
-    display: flex;
-    gap: 1rem;
-    margin: 2.5rem auto;
-    justify-content: center;
-    align-items: center;
-    max-width: 800px;
-}
-
-.actions .btn {
-    min-width: 160px;
-    justify-content: center;
-}
-
-.actions .btn svg {
-    width: 1.25rem;
-    height: 1.25rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --primary-rgb: 96, 165, 250;
-    }
-    
-    .summary {
-        background: rgba(96, 165, 250, 0.1);
-        border-color: #334155;
-    }
-}
-
-.btn:disabled,
-.btn.disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-/* 按钮加载状态 */
-.btn.loading {
-    position: relative;
-    color: transparent;
-}
-
-.btn.loading::after {
-    content: "";
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* 按钮图标对齐 */
-.btn svg,
-.btn img {
-    width: 1.25em;
-    height: 1.25em;
-}
-
-/* 全宽按钮 */
-.btn-block {
-    width: 100%;
-    display: flex;
-}
-
-/* 现代表单样式 */
-form {
-    background: white;
-    padding: 2rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 0.875rem 1rem;
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 1.25rem;
-    transition: var(--transition);
-    font-size: 1rem;
-}
-
-input[type="text"]:hover {
-    border-color: var(--primary-light);
-}
-
-input[type="text"]:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-input[type="radio"] {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-right: 0.5rem;
-    accent-color: var(--primary);
-}
-
-label {
-    display: block;
-    margin-bottom: 0.75rem;
+    font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+    color: var(--text);
     font-weight: 500;
-    color: var(--text);
 }
 
-/* 投票列表现代化 */
-.polls-list {
-    display: grid;
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-/* 投票项目卡片样式 */
-.poll-item {
-    background: white;
-    padding: 1.75rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.poll-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary-light);
-}
-
-/* 投票标题区域 */
-.poll-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.poll-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text);
-    margin: 0;
-    flex: 1;
-    line-height: 1.4;
-}
-
-/* 投票元信息样式 */
-.poll-meta {
-    font-size: 0.875rem;
-    color: var(--text-light);
-}
-
-.poll-timestamps {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.created-time, .vote-time {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* 图标样式 */
-.icon {
-    flex-shrink: 0;
-    opacity: 0.7;
-}
-
-/* 投票操作区域 */
-.poll-actions {
-    display: flex;
-    gap: 1rem;
+.summary p::after {
+    font-weight: 500;
+    opacity: 0.8;
     margin-top: 0.5rem;
 }
 
-.poll-actions .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-}
-
-.poll-actions .btn .icon {
-    opacity: 1;
-}
-
-/* 投票选项样式 */
-.vote-option {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: var(--radius);
-    border: 2px solid var(--border);
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.vote-option:hover {
-    border-color: var(--primary);
-    background: rgba(59, 130, 246, 0.1);
-}
-
-.vote-option input[type="radio"] {
-    margin-right: 1rem;
-}
-
-.vote-option label {
-    margin: 0;
-    cursor: pointer;
-    flex: 1;
-}
-
-/* 选中状态样式 */
-.vote-option input[type="radio"]:checked + label {
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.vote-option input[type="radio"]:checked {
-    accent-color: var(--primary);
-}
-
-.vote-option:has(input[type="radio"]:checked) {
-    border-color: var(--primary);
-    background: rgba(59, 130, 246, 0.1);
-}
-
-.poll-item {
-    background: white;
-    padding: 1.75rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 1px solid var(--border);
-}
-
-.poll-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.375rem 1rem;
-    border-radius: 2rem;
+.summary p::after {
     font-size: 0.875rem;
-    font-weight: 500;
-    color: white;
-    transition: var(--transition);
+    color: var(--text-light);
+    margin-top: 0.25rem;
 }
 
-.badge.voted {
-    background: linear-gradient(to right, var(--success), #16a34a);
-}
-
-.badge.not-voted {
-    background: linear-gradient(to right, var(--secondary), #475569);
-}
-
-/* 结果页面现代化 */
-.results {
-    background: white;
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    width: 100%;
-    margin: 0 auto;
-}
-
-.result {
-    margin-bottom: 2.5rem;
-    padding: 0.5rem;
-    border-radius: var(--radius);
-    transition: var(--transition);
-}
-
-.result:hover {
-    background: rgba(var(--primary-rgb), 0.05);
-}
-
-.result:last-child {
-    margin-bottom: 1.5rem;
-}
-
-.result-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-    padding: 0 0.5rem;
-}
-
-.option-text {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.4;
-    flex: 1;
-}
-
-.vote-count {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary);
-    background: rgba(var(--primary-rgb), 0.1);
-    padding: 0.15rem 0.5rem;
-    border-radius: 0.75rem;
-    margin-left: 0.5rem;
-    white-space: nowrap;
-}
-
-.results h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.75rem;
-    color: var(--text);
-    font-weight: 600;
-}
 
 @media (max-width: 640px) {
-    .option-text {
-        font-size: 1rem;
-    }
-    
-    .results h2 {
+    .page-title {
         font-size: 1.5rem;
+        margin: 1.5rem 0;
+        padding-bottom: 0.5rem;
+    }
+
+    .page-title::after {
+        width: 30px;
+        height: 2px;
+    }
+
+    form {
+        padding: 1.25rem;
+        margin: 1rem auto;
+        width: calc(100% - 1rem);
+        border-radius: var(--radius);
+    }
+
+    form > div {
         margin-bottom: 1.5rem;
     }
-}
 
-.progress-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0.5rem 0;
-}
+    form label {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
 
-.progress-track {
-    background: #0f172a;
-    border-radius: 0.75rem;
-    height: 0.75rem;
-    flex: 1;
-    position: relative;
-    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.03);
-    min-width: 100px;
-    opacity: 0.5;
-}
+    form input[type="text"] {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.9375rem;
+    }
 
-.progress {
-    background: linear-gradient(to right, var(--primary-light), var(--primary));
-    height: 100%;
-    border-radius: 0.75rem;
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 2px rgba(var(--primary-rgb), 0.15);
-    opacity: 0.85;
-}
+    #options-container {
+        gap: 0.75rem;
+    }
 
-.progress-stats {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.progress-stats span {
-    background: rgba(var(--primary-rgb), 0.1);
-    color: var(--primary);
-    padding: 0.15rem 0.5rem;
-    border-radius: 0.75rem;
-}
-
-@media (max-width: 640px) {
-    .progress-bar {
+    #options-container > div {
         flex-direction: column;
         gap: 0.5rem;
         align-items: stretch;
     }
-    
-    .progress-stats {
-        justify-content: flex-end;
-    }
-}
 
-/* 闪现消息现代化 */
-.flash-message {
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
-    border-radius: var(--radius);
-    background: linear-gradient(to right, var(--primary-light), var(--primary));
-    color: white;
-    font-weight: 500;
-    animation: slideIn 0.3s ease-out;
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-1rem);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* 响应式设计优化 */
-@media (max-width: 768px) {
-    .nav-container {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    nav ul {
+    .btn-danger {
         width: 100%;
         justify-content: center;
     }
 
-    .btn {
+    form button[type="submit"],
+    form button[type="button"] {
         width: 100%;
+        justify-content: center;
+        padding: 0.75rem;
     }
 
-    form {
-        padding: 1.5rem;
+    .nav-container {
+        padding: 0.75rem 1rem;
     }
 
-    .container {
-        padding: 0 1rem;
+    .nav-brand h1 {
+        font-size: 1.25rem;
     }
-}
 
-@media (max-width: 480px) {
-    nav ul {
+    .nav-menu {
+        gap: 0.75rem;
+    }
+
+    .nav-menu a {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.9375rem;
+    }
+
+    .polls-list {
         gap: 1rem;
-        font-size: 0.9rem;
-    }
-
-    .badge {
-        font-size: 0.75rem;
+        padding: 0.5rem 0;
     }
 
     .poll-item {
         padding: 1.25rem;
+        border-radius: var(--radius);
+    }
+
+    .poll-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .poll-title {
+        font-size: 1.125rem;
+    }
+
+    .badge {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8125rem;
+    }
+
+    .poll-timestamps {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .poll-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .poll-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+        margin: 1rem auto;
+        border-radius: var(--radius);
+    }
+
+    .empty-state p {
+        font-size: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .results {
+        width: calc(100% - 1rem);
+        padding: 1rem;
+        margin: 0.5rem auto;
+        border-radius: var(--radius);
+    }
+
+    .result {
+        padding: 0.875rem;
+    }
+
+    .result-header {
+        gap: 0.5rem;
+    }
+
+    .option-text {
+        font-size: 0.9375rem;
+        min-width: 160px;
+    }
+
+    .vote-count,
+    .progress-stats {
+        font-size: 0.875rem;
+        padding: 0.35rem 0.75rem;
+        min-width: 3.5rem;
+    }
+
+    .progress-track {
+        height: 0.625rem;
+    }
+
+    .actions {
+        width: calc(100% - 1rem);
+        margin: 1.5rem auto;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .actions .btn {
+        width: 100%;
+        padding: 0.875rem;
+    }
+
+    .summary {
+        width: calc(100% - 1rem);
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .summary p {
+        min-width: 120px;
     }
 }
 
-/* 深色模式支持 */
 @media (prefers-color-scheme: dark) {
     :root {
         --bg: #0f172a;
@@ -752,19 +898,69 @@ label {
         --primary: #60a5fa;
         --primary-dark: #3b82f6;
         --primary-light: #93c5fd;
-        --secondary: #94a3b8;
-        --success: #4ade80;
-        --error: #f87171;
     }
 
-    body {
-        background: var(--bg);
+    .page-title {
+        background: linear-gradient(to right, var(--primary-light), var(--text));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: none;
     }
 
-    /* 导航栏深色模式 */
+    .page-title::after {
+        background: linear-gradient(to right, var(--primary), var(--primary-light));
+        opacity: 0.5;
+    }
+
+    form {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    form label {
+        color: var(--text);
+    }
+
+    form input[type="text"] {
+        background: rgba(15, 23, 42, 0.6);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--text);
+    }
+
+    form input[type="text"]:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+    }
+
+    form input[type="text"]::placeholder {
+        color: var(--text-light);
+    }
+
+    .btn-danger {
+        background: #dc2626;
+    }
+
+    .btn-danger:hover {
+        background: #b91c1c;
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    }
+
+    #options-container > div {
+        background: rgba(15, 23, 42, 0.3);
+        padding: 0.75rem;
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
     .main-nav {
         background: rgba(15, 23, 42, 0.95);
-        border-bottom-color: rgba(51, 65, 85, 0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(var(--primary-rgb), 0.1);
     }
 
     .nav-brand {
@@ -776,128 +972,140 @@ label {
     }
 
     .nav-menu a:hover {
+        background: rgba(var(--primary-rgb), 0.15);
         color: var(--primary-light);
     }
 
-    /* 卡片和表单深色模式 */
-    .poll-item, form, .results {
-        background: #1e293b;
-        border-color: #334155;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    .nav-menu a[aria-current="page"] {
+        background: var(--primary);
+        color: white;
+    }
+
+    .poll-item {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(var(--primary-rgb), 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
     }
 
     .poll-item:hover {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        border-color: var(--primary);
+        border-color: rgba(var(--primary-rgb), 0.3);
+        background: rgba(30, 41, 59, 0.98);
     }
 
-    /* 投票标题和元信息深色模式 */
-    .poll-title {
-        color: var(--text);
-    }
-
-    .poll-meta {
-        color: var(--text-light);
-    }
-
-    .icon {
-        opacity: 0.8;
-    }
-
-    .created-time, .vote-time {
-        color: var(--text-light);
-    }
-
-    /* 按钮图标深色模式 */
-    .poll-actions .btn .icon {
-        opacity: 1;
-    }
-
-    /* 投票状态徽章深色模式调整 */
-    .badge {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    /* 表单元素深色模式 */
-    input[type="text"] {
-        background: #334155;
-        color: var(--text);
-        border-color: #475569;
-    }
-
-    input[type="text"]:hover {
-        border-color: var(--primary-light);
-    }
-
-    input[type="text"]:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
-    }
-
-    /* 按钮深色模式 */
-    .btn {
-        color: var(--text);
-    }
-
-    .btn-primary {
-        background: linear-gradient(to right, var(--primary), var(--primary-dark));
-        box-shadow: 0 2px 4px rgba(96, 165, 250, 0.2);
-    }
-
-    .btn-primary:hover {
-        box-shadow: 0 4px 6px rgba(96, 165, 250, 0.3);
-    }
-
-    .btn-secondary {
-        background: linear-gradient(to right, #64748b, #475569);
-        box-shadow: 0 2px 4px rgba(100, 116, 139, 0.2);
-    }
-
-    .btn-secondary:hover {
-        box-shadow: 0 4px 6px rgba(100, 116, 139, 0.3);
-    }
-
-    .btn-danger {
-        background: linear-gradient(to right, var(--error), #dc2626);
-        box-shadow: 0 2px 4px rgba(248, 113, 113, 0.2);
-    }
-
-    .btn-danger:hover {
-        box-shadow: 0 4px 6px rgba(248, 113, 113, 0.3);
-    }
-
-    /* 进度条深色模式 */
-    .progress-bar {
-        background: #ffffff00;
-    }
-
-    .progress {
-        background: linear-gradient(to right, var(--primary), var(--primary-dark));
-    }
-
-    /* 闪现消息深色模式 */
-    .flash-message {
-        background: linear-gradient(to right, var(--primary), var(--primary-dark));
-        box-shadow: 0 2px 4px rgba(96, 165, 250, 0.2);
-    }
-
-    /* 投票选项深色模式 */
-    .vote-option {
-        background: #334155;
-        border-color: #475569;
-    }
-
-    .vote-option:hover {
-        background: #3e4c67;
-    }
-
-    /* 徽章深色模式 */
     .badge.voted {
-        background: linear-gradient(to right, var(--success), #16a34a);
+        background: rgba(var(--primary-rgb), 0.2);
+        color: var(--primary-light);
     }
 
     .badge.not-voted {
-        background: linear-gradient(to right, var(--secondary), #475569);
+        background: rgba(100, 116, 139, 0.2);
+        color: #94a3b8;
     }
 
+    .empty-state {
+        background: rgba(30, 41, 59, 0.95);
+        border: 1px solid rgba(var(--primary-rgb), 0.1);
+    }
+
+    .results {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(255, 255, 255, 0.03);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .results:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        border-color: rgba(var(--primary-rgb), 0.1);
+    }
+
+    .result {
+        background: rgba(51, 65, 85, 0.3);
+        border-color: rgba(51, 65, 85, 0.8);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .result:hover {
+        border-color: rgba(var(--primary-rgb), 0.3);
+        background: rgba(var(--primary-rgb), 0.15);
+    }
+
+    .vote-count,
+    .progress-stats {
+        background: rgba(var(--primary-rgb), 0.15);
+        color: var(--primary-light);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(var(--primary-rgb), 0.2);
+    }
+
+    .progress-track {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress {
+        box-shadow: 0 1px 3px rgba(var(--primary-rgb), 0.3);
+    }
+
+    .option-text {
+        color: var(--text);
+    }
+
+    .summary {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(var(--primary-rgb), 0.2);
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) {
+    .result {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .result:active {
+        transform: scale(0.98);
+        transition: transform 0.1s;
+    }
+
+    .vote-count:active,
+    .progress-stats:active {
+        transform: scale(0.95);
+    }
+
+    .actions .btn:active {
+        transform: scale(0.98);
+    }
+
+    /* 表单触摸优化 */
+    form input[type="text"] {
+        font-size: 16px; /* 防止iOS自动缩放 */
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    form input[type="text"]:active {
+        background: rgba(var(--primary-rgb), 0.05);
+    }
+
+    .btn-danger:active {
+        transform: scale(0.95);
+        transition: transform 0.1s;
+    }
+
+    #options-container > div {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    #options-container > div:active {
+        background: rgba(var(--primary-rgb), 0.05);
+    }
+
+    form button[type="submit"]:active,
+    form button[type="button"]:active {
+        transform: scale(0.98);
+        transition: transform 0.1s;
+    }
 }
