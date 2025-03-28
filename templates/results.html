@@ -3,56 +3,44 @@
 {% block title %}投票结果{% endblock %}
 
 {% block content %}
-    <div class="results-container">
-        <h2>{{ poll.question }}</h2>
-        
-        {% set total_votes = namespace(value=0) %}
+    <h2>{{ poll.question }}</h2>
+    
+    {% set total_votes = namespace(value=0) %}
+    {% for option in options %}
+        {% set total_votes.value = total_votes.value + option.votes %}
+    {% endfor %}
+    
+    <div class="results">
         {% for option in options %}
-            {% set total_votes.value = total_votes.value + option.votes %}
-        {% endfor %}
-        
-        <div class="results-list">
-            {% for option in options %}
-                {% set percentage = ((option.votes | float) / total_votes.value * 100) if total_votes.value > 0 else 0 %}
-                <div class="result-item">
-                    <div class="result-header">
-                        <span class="option-text">{{ option.option_text }}</span>
-                        <span class="vote-count">{{ option.votes }} 票</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress" style="width: {{ percentage }}%"></div>
-                        </div>
-                        <div class="percentage">
-                            {{ "%.1f"|format(percentage) }}%
-                        </div>
-                    </div>
+            {% set percentage = ((option.votes | float) / total_votes.value * 100) if total_votes.value > 0 else 0 %}
+            <div class="result">
+                <div class="result-header">
+                    {{ option.option_text }}
+                    <span>{{ option.votes }} 票</span>
                 </div>
-            {% endfor %}
-        </div>
-        
-        <div class="results-summary">
-            <p>总投票数：{{ total_votes.value }}</p>
-            <p class="created-time">创建时间：{{ poll.created_at }}</p>
-        </div>
-        
-        <div class="results-actions">
-            <a href="{{ url_for('vote', poll_id=poll.id) }}" class="button">继续投票</a>
-            <a href="{{ url_for('index') }}" class="button secondary">返回首页</a>
-        </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: {{ percentage }}%; transition: width 0.8s ease-in-out"></div>
+                    <span>{{ "%.1f"|format(percentage) }}%</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div class="summary">
+        <p>总投票数：{{ total_votes.value }}</p>
+        <p>创建时间：{{ poll.created_at }}</p>
+    </div>
+    
+    <div class="actions">
+        <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn primary">继续投票</a>
+        <a href="{{ url_for('index') }}" class="btn">返回首页</a>
     </div>
 
     <script>
-        // 为进度条添加动画效果
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressBars = document.querySelectorAll('.progress');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
-            });
+        document.querySelectorAll('.progress').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => bar.style.width = width, 100);
         });
     </script>
 {% endblock %}

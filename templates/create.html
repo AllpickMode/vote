@@ -4,51 +4,46 @@
 
 {% block content %}
     <h2>创建新投票</h2>
-    <form method="post" class="create-poll-form">
-        <div class="form-group">
+    <form method="post">
+        <div>
             <label for="question">投票问题：</label>
             <input type="text" id="question" name="question" required 
                    value="{{ question if question else '' }}">
         </div>
         
-        <div class="form-group">
+        <div>
             <label>选项：</label>
             <div id="options-container">
                 {% if options %}
                     {% for option in options %}
-                        <div class="option-input">
+                        <div>
                             <input type="text" name="options[]" value="{{ option }}" required>
                             {% if not loop.first %}
-                                <button type="button" class="remove-option" onclick="this.parentElement.remove()">删除</button>
+                                <button type="button" onclick="this.parentElement.remove()">删除</button>
                             {% endif %}
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div class="option-input">
-                        <input type="text" name="options[]" required placeholder="选项1">
-                    </div>
-                    <div class="option-input">
-                        <input type="text" name="options[]" required placeholder="选项2">
-                    </div>
+                    <div><input type="text" name="options[]" required placeholder="选项1"></div>
+                    <div><input type="text" name="options[]" required placeholder="选项2"></div>
                 {% endif %}
             </div>
-            <button type="button" onclick="addOption()" class="button secondary">添加选项</button>
+            <button type="button" onclick="addOption()" class="btn secondary">添加选项</button>
         </div>
 
-        <button type="submit" class="button">创建投票</button>
+        <button type="submit" class="btn primary">创建投票</button>
     </form>
 
     <script>
-        function addOption() {
+        const addOption = () => {
             const container = document.getElementById('options-container');
-            const optionCount = container.children.length;
-            const newOption = document.createElement('div');
-            newOption.className = 'option-input';
-            newOption.innerHTML = `
-                <input type="text" name="options[]" required placeholder="选项${optionCount + 1}">
-                <button type="button" class="remove-option" onclick="this.parentElement.remove()">删除</button>
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <input type="text" name="options[]" required 
+                       placeholder="选项${container.children.length + 1}">
+                <button type="button" onclick="this.parentElement.remove()">删除</button>
             `;
-            container.appendChild(newOption);
-        }
+            container.appendChild(div);
+        };
     </script>
 {% endblock %}

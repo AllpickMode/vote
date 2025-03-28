@@ -3,91 +3,58 @@
 {% block title %}参与投票{% endblock %}
 
 {% block content %}
-    <div class="vote-container">
-        <h2>{{ poll.question }}</h2>
+    <h2>{{ poll.question }}</h2>
+    
+    <form method="post" id="voteForm">
+        <input type="hidden" name="fingerprint" id="fingerprintInput">
+        {% for option in options %}
+        <div class="vote-option">
+            <input type="radio" 
+                   id="option{{ option.id }}" 
+                   name="option" 
+                   value="{{ option.id }}" 
+                   required>
+            <label for="option{{ option.id }}">
+                {{ option.option_text }}
+            </label>
+        </div>
+        {% endfor %}
         
-        <form method="post" class="vote-form" id="voteForm">
-            <input type="hidden" name="fingerprint" id="fingerprintInput">
-            {% for option in options %}
-            <div class="option-radio">
-                <input type="radio" 
-                       id="option{{ option.id }}" 
-                       name="option" 
-                       value="{{ option.id }}" 
-                       required>
-                <label for="option{{ option.id }}" class="radio-label">
-                    {{ option.option_text }}
-                </label>
-            </div>
-            {% endfor %}
-            
-            <div class="form-actions">
-                <button type="submit" class="button">提交投票</button>
-                <a href="{{ url_for('results', poll_id=poll.id) }}" class="button secondary">查看结果</a>
-            </div>
-        </form>
-    </div>
-
-    <style>
-        .radio-label {
-            display: block;
-            padding: 10px 15px;
-            margin: 5px 0;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .option-radio input[type="radio"] {
-            display: none;
-        }
-
-        .option-radio input[type="radio"]:checked + .radio-label {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .radio-label:hover {
-            background-color: var(--background-color);
-        }
-    </style>
+        <div class="form-actions">
+            <button type="submit" class="btn primary">提交投票</button>
+            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn">查看结果</a>
+        </div>
+    </form>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async () => {
             const form = document.getElementById('voteForm');
             const fingerprintInput = document.getElementById('fingerprintInput');
 
+            const showError = (message) => {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'flash-message';
+                errorDiv.textContent = message;
+                form.insertBefore(errorDiv, form.firstChild);
+                setTimeout(() => {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => errorDiv.remove(), 600);
+                }, 3000);
+            };
+
             try {
-                // 获取浏览器指纹
                 const fingerprint = await getBrowserFingerprint();
                 if (!fingerprint) {
-                    alert('无法获取浏览器指纹，请确保启用了JavaScript并允许相关权限。');
-                    window.location.href = "{{ url_for('index') }}";
+                    showError('无法获取浏览器指纹，请确保启用了JavaScript并刷新页面重试。');
+                    setTimeout(() => location.href = "{{ url_for('index') }}", 4000);
                     return;
                 }
-                
-                // 设置指纹到隐藏字段
                 fingerprintInput.value = fingerprint;
             } catch (error) {
-                console.error('获取浏览器指纹时出错:', error);
-                alert('无法验证投票资格，请稍后重试。');
-                window.location.href = "{{ url_for('index') }}";
-                return;
+                console.error('指纹验证失败:', error);
+                showError('验证失败，请确保浏览器允许必要的权限并稍后重试。');
+                setTimeout(() => location.href = "{{ url_for('index') }}", 4000);
             }
-
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                if (!fingerprintInput.value) {
-                    alert('无法验证浏览器指纹，请确保启用了JavaScript并允许相关权限。');
-                    return;
-                }
-                
-                // 提交表单
-                form.submit();
-            });
         });
     </script>
 {% endblock %}

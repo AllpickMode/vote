@@ -4,40 +4,34 @@
 
 {% block content %}
     {% if polls %}
-        <div class="content-block">
-            <div class="polls-list card">
+        <div class="polls-list">
             {% for poll in polls %}
-                <div class="poll-card card-content {% if poll.has_voted %}voted{% endif %}">
-                    <div class="poll-number"> # {{ loop.revindex }}</div>
-                    <div class="poll-header">
-                        <h3>{{ poll.question }}</h3>
-                        <div class="vote-status">
-                            <span class="status-badge {% if poll.has_voted %}voted{% else %}not-voted{% endif %}">
-                                {% if poll.has_voted %}已投票{% else %}未投票{% endif %}
-                            </span>
-                            {% if poll.has_voted %}
-                                <span class="vote-time">投票于: {{ poll.vote_time }}</span>
-                            {% endif %}
-                        </div>
+                <div class="poll-item {% if poll.has_voted %}voted{% endif %}">
+                    <h3>{{ poll.question }}</h3>
+                    <div class="poll-info">
+                        <span class="badge {% if poll.has_voted %}voted{% else %}not-voted{% endif %}">
+                            {{ '已投票' if poll.has_voted else '未投票' }}
+                        </span>
+                        {% if poll.has_voted %}
+                            <span>投票于: {{ poll.vote_time }}</span>
+                        {% endif %}
                     </div>
                     <div class="poll-actions">
                         {% if poll.has_voted %}
-                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="button primary">查看结果</a>
+                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn primary">查看结果</a>
                         {% else %}
-                            <a href="{{ url_for('vote', poll_id=poll.id) }}" class="button">参与投票</a>
-                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="button secondary">查看结果</a>
+                            <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn">参与投票</a>
+                            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn secondary">查看结果</a>
                         {% endif %}
                     </div>
-                    <div class="poll-meta">
-                        创建时间: {{ poll.created_at }}
-                    </div>
+                    <time>创建时间: {{ poll.created_at }}</time>
                 </div>
             {% endfor %}
         </div>
     {% else %}
         <div class="empty-state">
             <p>目前还没有投票。</p>
-            <a href="{{ url_for('create') }}" class="button">创建第一个投票</a>
+            <a href="{{ url_for('create') }}" class="btn">创建第一个投票</a>
         </div>
     {% endif %}
 {% endblock %}
