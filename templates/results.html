@@ -16,13 +16,13 @@
             <div class="result">
                 <div class="result-header">
                     <span class="option-text">{{ option.option_text }}</span>
+                    <span class="vote-count">{{ option.votes }} 票</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-track">
                         <div class="progress" style="width: {{ percentage }}%; transition: width 0.8s ease-in-out"></div>
                     </div>
                     <div class="progress-stats">
-                        <span>{{ option.votes }} 票</span>
                         <span>{{ "%.1f"|format(percentage) }}%</span>
                     </div>
                 </div>

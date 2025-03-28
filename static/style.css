@@ -36,10 +36,11 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 50%;
     margin: 0 auto;
     padding: 0 1.5rem;
     width: 100%;
+    min-width: 320px;
 }
 
 main {
@@ -241,7 +242,7 @@ main {
     border-radius: var(--radius-lg);
     background: white;
     border: 1px solid var(--border);
-    max-width: 800px;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -558,7 +559,7 @@ label {
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    max-width: 800px;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -580,6 +581,7 @@ label {
 .result-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 0.75rem;
     padding: 0 0.5rem;
 }
@@ -589,6 +591,18 @@ label {
     font-weight: 500;
     color: var(--text);
     line-height: 1.4;
+    flex: 1;
+}
+
+.vote-count {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    margin-left: 1rem;
+    white-space: nowrap;
 }
 
 .results h2 {
