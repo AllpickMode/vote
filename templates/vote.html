@@ -3,31 +3,35 @@
 {% block title %}参与投票{% endblock %}
 
 {% block content %}
-    <h2>{{ poll.question }}</h2>
+    <h2 class="page-title">{{ poll.question }}</h2>
     
-    <form method="post" id="voteForm">
+    <form method="post" id="voteForm" class="vote-form">
         <input type="hidden" name="fingerprint" id="fingerprintInput">
-        {% for option in options %}
-        <div class="vote-option">
-            <input type="radio" 
-                   id="option{{ option.id }}" 
-                   name="option" 
-                   value="{{ option.id }}" 
-                   required>
-            <label for="option{{ option.id }}">
-                {{ option.option_text }}
-            </label>
+        <div class="options-list">
+            {% for option in options %}
+            <div class="vote-option">
+                <input type="radio" 
+                       id="option{{ option.id }}" 
+                       name="option" 
+                       value="{{ option.id }}" 
+                       required>
+                <label for="option{{ option.id }}" class="option-label">
+                    {{ option.option_text }}
+                </label>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
         
-        <div class="form-actions">
+        <div class="actions">
             <button type="submit" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
                     <path d="M20 6L9 17l-5-5"></path>
                 </svg>
-                提交投票
+                <span>提交投票</span>
             </button>
-            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn btn-secondary">查看结果</a>
+            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn btn-secondary">
+                <span>查看结果</span>
+            </a>
         </div>
     </form>
 
