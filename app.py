@@ -184,8 +184,12 @@ def vote(poll_id):
     ''', [poll_id, ip_address, poll_id, ip_address]).fetchone()
     
     if last_vote:
-        flash('您已经参与过这个投票了')
-        return redirect(url_for('results', poll_id=poll_id))
+        return """
+            <script>
+                alert('您已经参与过这个投票了');
+                window.location.href = '{}';
+            </script>
+        """.format(url_for('results', poll_id=poll_id))
     
     if request.method == 'POST':
         fingerprint = request.form.get('fingerprint')

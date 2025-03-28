@@ -42,6 +42,22 @@
         </div>
     </main>
 
+    <!-- Modal Dialog -->
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>提示</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="modal-confirm">确定</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 将JavaScript移到底部以提高页面加载性能 -->
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js" defer></script>
     <script>
@@ -55,6 +71,53 @@
                 return null;
             }
         }
+
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('modal');
+            const modalMessage = document.getElementById('modal-message');
+            const modalClose = document.querySelector('.modal-close');
+            const modalConfirm = document.getElementById('modal-confirm');
+            const redirectUrl = "{{ request.args.get('next', url_for('index')) }}";
+
+            function showModal(message, callback) {
+                modalMessage.textContent = message;
+                modal.style.display = 'flex';
+                
+                const closeModal = () => {
+                    modal.style.display = 'none';
+                    if (callback) callback();
+                };
+
+                modalClose.onclick = closeModal;
+                modalConfirm.onclick = closeModal;
+
+                window.onclick = (event) => {
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+                };
+            }
+
+            // 检查是否有需要显示的弹窗消息
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        if (message.startsWith('[MODAL]')) {
+                            const msg = message.replace('[MODAL]', '').trim();
+                            showModal(msg, () => {
+                                if (window.location.pathname.includes('/vote/')) {
+                                    window.location.href = redirectUrl;
+                                }
+                            });
+                        }
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            // 将showModal函数暴露给全局作用域
+            window.showModal = showModal;
+        });
     </script>
 </body>
 </html>
