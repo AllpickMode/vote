@@ -6,6 +6,11 @@
     <h2 class="page-title">创建新投票</h2>
     <form method="post">
         <div>
+            <label for="password">创建密码：</label>
+            <input type="password" id="password" name="password" required 
+                   value="{{ password if password else '' }}">
+        </div>
+        <div>
             <label for="question">投票问题：</label>
             <input type="text" id="question" name="question" required 
                    value="{{ question if question else '' }}">

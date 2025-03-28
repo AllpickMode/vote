@@ -132,7 +132,18 @@ def index():
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
+        password = request.form.get('password')
         question = request.form['question'].strip()
+        options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
+
+        if password != '995907':
+            return """
+                <script>
+                    alert('创建密码错误');
+                    window.location.href = '{}';
+                </script>
+            """.format(url_for('create'))
+
         options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
         
         if not question:

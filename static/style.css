@@ -479,7 +479,8 @@ form label {
     margin-bottom: 0.75rem;
 }
 
-form input[type="text"] {
+form input[type="text"],
+form input[type="password"] {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid var(--border);
@@ -491,11 +492,13 @@ form input[type="text"] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-form input[type="text"]:hover {
+form input[type="text"]:hover,
+form input[type="password"]:hover {
     border-color: rgba(var(--primary-rgb), 0.4);
 }
 
-form input[type="text"]:focus {
+form input[type="text"]:focus,
+form input[type="password"]:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1),
@@ -503,7 +506,8 @@ form input[type="text"]:focus {
     transform: translateY(-1px);
 }
 
-form input[type="text"]::placeholder {
+form input[type="text"]::placeholder,
+form input[type="password"]::placeholder {
     color: var(--text-light);
     opacity: 0.7;
 }
@@ -961,18 +965,21 @@ form button[type="submit"] {
         color: var(--text);
     }
 
-    form input[type="text"] {
+    form input[type="text"],
+    form input[type="password"] {
         background: rgba(15, 23, 42, 0.6);
         border-color: rgba(255, 255, 255, 0.1);
         color: var(--text);
     }
 
-    form input[type="text"]:focus {
+    form input[type="text"]:focus,
+    form input[type="password"]:focus {
         border-color: var(--primary);
         box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
     }
 
-    form input[type="text"]::placeholder {
+    form input[type="text"]::placeholder,
+    form input[type="password"]::placeholder {
         color: var(--text-light);
     }
 
@@ -1216,12 +1223,14 @@ form button[type="submit"] {
     }
 
     /* 表单触摸优化 */
-    form input[type="text"] {
+    form input[type="text"],
+    form input[type="password"] {
         font-size: 16px; /* 防止iOS自动缩放 */
         -webkit-tap-highlight-color: transparent;
     }
 
-    form input[type="text"]:active {
+    form input[type="text"]:active,
+    form input[type="password"]:active {
         background: rgba(var(--primary-rgb), 0.05);
     }
 
