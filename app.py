@@ -89,6 +89,13 @@ def index():
     db = get_db()
     polls = db.execute('SELECT * FROM polls ORDER BY id DESC').fetchall()
     
+    # 转换创建时间到本地时区
+    from datetime import datetime
+    import pytz
+    
+    # 创建时区对象
+    local_tz = pytz.timezone('Asia/Shanghai')
+    
     # 获取用户IP地址
     ip_address = request.headers.get('X-Real-IP') or \
                  request.headers.get('X-Forwarded-For', '').split(',')[0].strip() or \
@@ -110,6 +117,13 @@ def index():
         
         # 将投票信息和状态一起存储
         poll_info = dict(poll)
+        
+        # 转换创建时间
+        created_time = datetime.strptime(poll['created_at'], '%Y-%m-%d %H:%M:%S')
+        created_time = pytz.utc.localize(created_time)
+        local_created_time = created_time.astimezone(local_tz)
+        poll_info['created_at'] = local_created_time.strftime('%Y-%m-%d %H:%M')
+        
         poll_info['has_voted'] = last_vote is not None
         if last_vote:
             # 格式化时间为更友好的显示，并处理时区
@@ -152,8 +166,14 @@ def create():
         cursor = db.cursor()
         
         try:
-            # 插入投票问题
-            cursor.execute('INSERT INTO polls (question) VALUES (?)', [question])
+            # 获取当前时间（使用UTC）
+            from datetime import datetime
+            import pytz
+            utc_now = datetime.now(pytz.UTC)
+            
+            # 插入投票问题（SQLite会自动将UTC时间存储）
+            cursor.execute('INSERT INTO polls (question, created_at) VALUES (?, ?)', 
+                         [question, utc_now.strftime('%Y-%m-%d %H:%M:%S')])
             poll_id = cursor.lastrowid
             
             # 插入选项
