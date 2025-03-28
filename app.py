@@ -205,6 +205,16 @@ def vote(poll_id):
     if request.method == 'POST':
         fingerprint = request.form.get('fingerprint')
         option_id = request.form.get('option')
+        captcha_verified = request.form.get('captcha_verified')
+
+        if captcha_verified != 'true':
+            flash('请完成滑动验证')
+            return render_template('vote.html', poll=poll, options=options)
+        captcha_verified = request.form.get('captcha_verified')
+
+        if not captcha_verified or captcha_verified != 'true':
+            flash('请完成滑动验证')
+            return render_template('vote.html', poll=poll, options=options)
         
         if not fingerprint:
             flash('无法验证浏览器指纹，请确保启用了JavaScript')

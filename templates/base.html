@@ -11,6 +11,8 @@
     <link rel="preload" href="{{ url_for('static', filename='icons/vote-icon.svg') }}" as="image" type="image/svg+xml">
     <title>{% block title %}{% endblock %} - Vote App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slider-captcha.css') }}">
+    {% block head %}{% endblock %}
 </head>
 <body>
     <nav class="main-nav" role="navigation" aria-label="主导航">
@@ -60,6 +62,7 @@
 
     <!-- 将JavaScript移到底部以提高页面加载性能 -->
     <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js" defer></script>
+    <script src="{{ url_for('static', filename='js/slider-captcha.js') }}"></script>
     <script>
         async function getBrowserFingerprint() {
             try {

@@ -1202,6 +1202,41 @@ form button[type="submit"] {
     }
 }
 
+/* 滑动验证码样式 */
+.verify-tip {
+    text-align: center;
+    color: var(--text-light);
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+.slider-captcha-container {
+    max-width: 280px;
+    margin: 1.5rem auto;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+    .slider-captcha-container {
+        background: rgba(30, 41, 59, 0.95);
+    }
+    
+    .verify-tip {
+        color: var(--text-light);
+    }
+}
+
+/* 禁用状态的提交按钮样式 */
+.btn-primary:disabled {
+    background: var(--text-light);
+    cursor: not-allowed;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
 /* 触摸设备优化 */
 @media (hover: none) {
     .result {
