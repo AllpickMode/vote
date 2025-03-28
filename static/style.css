@@ -299,9 +299,50 @@ nav ul a:hover {
     box-shadow: var(--shadow-lg);
 }
 
-.poll-card h3 {
+.poll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 1rem;
+}
+
+.poll-header h3 {
     color: var(--text-color);
+    margin: 0;
+    flex: 1;
+}
+
+.vote-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-badge.voted {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.status-badge.not-voted {
+    background-color: var(--secondary-color);
+    color: white;
+    opacity: 0.8;
+}
+
+.vote-time {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
 }
 
 .poll-actions {

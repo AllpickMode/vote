@@ -88,7 +88,29 @@ def apply_caching(response):
 def index():
     db = get_db()
     polls = db.execute('SELECT * FROM polls ORDER BY id DESC').fetchall()
-    return render_template('index.html', polls=polls)
+    
+    # 获取用户IP地址
+    ip_address = request.remote_addr
+    if request.headers.get('X-Forwarded-For'):
+        ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
+    
+    # 为每个投票检查用户是否已投票
+    polls_with_status = []
+    for poll in polls:
+        # 检查是否在24小时内投过票
+        last_vote = db.execute('''
+            SELECT voted_at FROM vote_records 
+            WHERE poll_id = ? AND ip_address = ?
+            AND voted_at > datetime('now', '-1 day')
+        ''', [poll['id'], ip_address]).fetchone()
+        
+        # 将投票信息和状态一起存储
+        poll_info = dict(poll)
+        poll_info['has_voted'] = last_vote is not None
+        poll_info['vote_time'] = last_vote['voted_at'] if last_vote else None
+        polls_with_status.append(poll_info)
+    
+    return render_template('index.html', polls=polls_with_status)
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
