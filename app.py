@@ -90,24 +90,33 @@ def index():
     polls = db.execute('SELECT * FROM polls ORDER BY id DESC').fetchall()
     
     # 获取用户IP地址
-    ip_address = request.remote_addr
-    if request.headers.get('X-Forwarded-For'):
-        ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
+    ip_address = request.headers.get('X-Real-IP') or \
+                 request.headers.get('X-Forwarded-For', '').split(',')[0].strip() or \
+                 request.remote_addr
     
     # 为每个投票检查用户是否已投票
     polls_with_status = []
     for poll in polls:
-        # 检查是否在24小时内投过票
+        # 检查是否投过票（不限时间）
         last_vote = db.execute('''
             SELECT voted_at FROM vote_records 
-            WHERE poll_id = ? AND ip_address = ?
-            AND voted_at > datetime('now', '-1 day')
-        ''', [poll['id'], ip_address]).fetchone()
+            WHERE poll_id = ? AND (ip_address = ? OR browser_fingerprint IN (
+                SELECT browser_fingerprint FROM vote_records 
+                WHERE poll_id = ? AND ip_address = ?
+            ))
+            ORDER BY voted_at DESC LIMIT 1
+        ''', [poll['id'], ip_address, poll['id'], ip_address]).fetchone()
         
         # 将投票信息和状态一起存储
         poll_info = dict(poll)
         poll_info['has_voted'] = last_vote is not None
-        poll_info['vote_time'] = last_vote['voted_at'] if last_vote else None
+        if last_vote:
+            # 格式化时间为更友好的显示
+            from datetime import datetime
+            voted_time = datetime.strptime(last_vote['voted_at'], '%Y-%m-%d %H:%M:%S')
+            poll_info['vote_time'] = voted_time.strftime('%Y-%m-%d %H:%M')
+        else:
+            poll_info['vote_time'] = None
         polls_with_status.append(poll_info)
     
     return render_template('index.html', polls=polls_with_status)
@@ -168,25 +177,29 @@ def vote(poll_id):
     if request.headers.get('X-Forwarded-For'):
         ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
     
-    # 检查用户是否在24小时内已经投过票
+    # 检查用户是否已经投过票（不限时间）
     if request.method == 'POST':
         # POST请求时检查IP和指纹
         last_vote = db.execute('''
             SELECT voted_at FROM vote_records 
             WHERE poll_id = ? 
-            AND (ip_address = ? OR browser_fingerprint = ?)
-            AND voted_at > datetime('now', '-1 day')
+            AND (ip_address = ? OR browser_fingerprint = ? OR browser_fingerprint IN (
+                SELECT browser_fingerprint FROM vote_records 
+                WHERE poll_id = ? AND ip_address = ?
+            ))
             ORDER BY voted_at DESC LIMIT 1
-        ''', [poll_id, ip_address, request.form.get('fingerprint', '')]).fetchone()
+        ''', [poll_id, ip_address, request.form.get('fingerprint', ''), poll_id, ip_address]).fetchone()
     else:
-        # GET请求时只检查IP
+        # GET请求时检查IP和关联的指纹
         last_vote = db.execute('''
             SELECT voted_at FROM vote_records 
             WHERE poll_id = ? 
-            AND ip_address = ?
-            AND voted_at > datetime('now', '-1 day')
+            AND (ip_address = ? OR browser_fingerprint IN (
+                SELECT browser_fingerprint FROM vote_records 
+                WHERE poll_id = ? AND ip_address = ?
+            ))
             ORDER BY voted_at DESC LIMIT 1
-        ''', [poll_id, ip_address]).fetchone()
+        ''', [poll_id, ip_address, poll_id, ip_address]).fetchone()
     
     has_voted = last_vote is not None
     
