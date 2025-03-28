@@ -561,22 +561,138 @@ nav ul a:hover {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+    /* 导航栏移动端优化 */
     .nav-container {
-        flex-direction: column;
-        gap: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.25rem 0.5rem;
     }
-    
+
+    nav {
+        padding: 0.4rem 0;
+        margin-bottom: 1.5rem;
+    }
+
+    nav ul {
+        width: auto;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-brand {
+        justify-content: flex-start;
+        gap: 0.5rem;
+    }
+
+    .nav-brand img {
+        height: 24px;
+        width: 24px;
+    }
+
+    nav h1 {
+        font-size: 1.1rem;
+    }
+
+    /* 容器padding调整 */
+    .container {
+        padding: 0 0.75rem;
+    }
+
+    /* 投票卡片移动端优化 */
+    .poll-card {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+    }
+
+    .poll-header {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .vote-status {
+        align-items: flex-start;
+    }
+
     .poll-actions {
         flex-direction: column;
+        gap: 0.75rem;
     }
-    
+
+    /* 按钮移动端优化 */
     .button {
         width: 100%;
         text-align: center;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        min-height: 44px; /* 确保触摸目标足够大 */
+    }
+
+    /* 表单元素移动端优化 */
+    .form-group input[type="text"] {
+        padding: 0.875rem;
+        font-size: 16px; /* 防止iOS自动缩放 */
     }
 
     .form-actions {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    /* 结果页面移动端优化 */
+    .results-container {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+    }
+
+    .result-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .progress-bar {
+        height: 0.875rem;
+    }
+
+    /* 错误页面移动端优化 */
+    .error-container {
+        padding: 2rem 1rem;
+        margin: 0 0.5rem;
+    }
+
+    .error-container h2 {
+        font-size: 1.5rem;
+    }
+
+    /* 页脚移动端优化 */
+    footer {
+        padding: 1.5rem 0;
+        font-size: 0.875rem;
+    }
+}
+
+/* 小屏幕设备额外优化 */
+@media (max-width: 480px) {
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    .poll-card {
+        padding: 1.25rem;
+    }
+
+    .status-badge {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .vote-time {
+        font-size: 0.7rem;
+    }
+
+    .button {
+        padding: 0.7rem 1.25rem;
     }
 }
 
