@@ -34,9 +34,6 @@ class SliderCaptcha {
         this.slider.className = 'slider-captcha-handle';
         this.sliderTrack = document.createElement('div');
         this.sliderTrack.className = 'slider-captcha-track';
-        this.sliderText = document.createElement('span');
-        this.sliderText.textContent = '向右滑动验证';
-        this.sliderTrack.appendChild(this.sliderText);
         this.sliderTrack.appendChild(this.slider);
         this.element.appendChild(this.sliderTrack);
     }

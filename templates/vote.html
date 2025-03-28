@@ -69,18 +69,10 @@
                 onSuccess: function() {
                     submitBtn.disabled = false;
                     captchaVerified.value = 'true';
-                    const verifyTip = document.querySelector('.verify-tip');
-                    verifyTip.textContent = '验证通过！';
-                    verifyTip.style.color = 'var(--success)';
-                    showError('验证通过！可以提交投票了');
                 },
                 onFail: function() {
                     submitBtn.disabled = true;
                     captchaVerified.value = 'false';
-                    const verifyTip = document.querySelector('.verify-tip');
-                    verifyTip.textContent = '验证失败，请重试';
-                    verifyTip.style.color = 'var(--error)';
-                    showError('验证失败，请重新尝试');
                 },
                 onRefresh: function() {
                     const verifyTip = document.querySelector('.verify-tip');
