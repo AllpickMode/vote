@@ -82,3 +82,39 @@ Traceback (most recent call last):
     # ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½Í¶ï¿½ï¿½Æ±
               ^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: voter_ips
+2025-03-28 10:11:44,005 ERROR: Î´´¦ÀíµÄÒì³£: no such column: browser_fingerprint [in C:\Code\vote\app.py:248]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 152, in vote
+    last_vote = db.execute('''
+                ^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: browser_fingerprint
+2025-03-28 10:12:02,107 ERROR: Î´´¦ÀíµÄÒì³£: no such column: browser_fingerprint [in C:\Code\vote\app.py:248]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 152, in vote
+    last_vote = db.execute('''
+                ^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: browser_fingerprint
+2025-03-28 10:12:06,698 ERROR: Î´´¦ÀíµÄÒì³£: no such column: browser_fingerprint [in C:\Code\vote\app.py:248]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 152, in vote
+    last_vote = db.execute('''
+                ^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: browser_fingerprint
