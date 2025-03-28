@@ -276,7 +276,21 @@ def results(poll_id):
     if not options:
         abort(404)
     
-    return render_template('results.html', poll=poll, options=options)
+    # 转换创建时间到本地时区
+    from datetime import datetime
+    import pytz
+    
+    # 创建时区对象
+    local_tz = pytz.timezone('Asia/Shanghai')
+    
+    # 转换创建时间
+    poll_info = dict(poll)
+    created_time = datetime.strptime(poll['created_at'], '%Y-%m-%d %H:%M:%S')
+    created_time = pytz.utc.localize(created_time)
+    local_created_time = created_time.astimezone(local_tz)
+    poll_info['created_at'] = local_created_time.strftime('%Y-%m-%d %H:%M')
+    
+    return render_template('results.html', poll=poll_info, options=options)
 
 # 临时调试路由
 @app.route('/debug/db')
