@@ -147,16 +147,32 @@ def vote(poll_id):
         ip_address = request.headers.get('X-Forwarded-For').split(',')[0]
     
     # 检查用户是否在24小时内已经投过票
-    last_vote = db.execute('''
-        SELECT voted_at FROM vote_records 
-        WHERE poll_id = ? AND ip_address = ? 
-        AND voted_at > datetime('now', '-1 day')
-        ORDER BY voted_at DESC LIMIT 1
-    ''', [poll_id, ip_address]).fetchone()
+    if request.method == 'POST':
+        # POST请求时检查IP和指纹
+        last_vote = db.execute('''
+            SELECT voted_at FROM vote_records 
+            WHERE poll_id = ? 
+            AND (ip_address = ? OR browser_fingerprint = ?)
+            AND voted_at > datetime('now', '-1 day')
+            ORDER BY voted_at DESC LIMIT 1
+        ''', [poll_id, ip_address, request.form.get('fingerprint', '')]).fetchone()
+    else:
+        # GET请求时只检查IP
+        last_vote = db.execute('''
+            SELECT voted_at FROM vote_records 
+            WHERE poll_id = ? 
+            AND ip_address = ?
+            AND voted_at > datetime('now', '-1 day')
+            ORDER BY voted_at DESC LIMIT 1
+        ''', [poll_id, ip_address]).fetchone()
     
     has_voted = last_vote is not None
     
     if request.method == 'POST':
+        if not request.form.get('fingerprint'):
+            flash('无法验证浏览器指纹，请确保启用了JavaScript')
+            return render_template('vote.html', poll=poll, options=options)
+            
         if has_voted:
             flash('您在24小时内已经参与过这个投票了，请稍后再试')
             return redirect(url_for('results', poll_id=poll_id))
@@ -174,11 +190,11 @@ def vote(poll_id):
             db.execute('UPDATE options SET votes = votes + 1 WHERE id = ? AND poll_id = ?', 
                       [option_id, poll_id])
             
-            # 记录投票历史
+            # 记录投票历史（包含浏览器指纹）
             db.execute('''
-                INSERT INTO vote_records (poll_id, option_id, ip_address)
-                VALUES (?, ?, ?)
-            ''', [poll_id, option_id, ip_address])
+                INSERT INTO vote_records (poll_id, option_id, ip_address, browser_fingerprint)
+                VALUES (?, ?, ?, ?)
+            ''', [poll_id, option_id, ip_address, request.form.get('fingerprint')])
             
             db.commit()
             flash('投票成功！')

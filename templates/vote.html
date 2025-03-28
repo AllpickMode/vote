@@ -6,7 +6,8 @@
     <div class="vote-container">
         <h2>{{ poll.question }}</h2>
         
-        <form method="post" class="vote-form">
+        <form method="post" class="vote-form" id="voteForm">
+            <input type="hidden" name="fingerprint" id="fingerprintInput">
             {% for option in options %}
             <div class="option-radio">
                 <input type="radio" 
@@ -52,4 +53,33 @@
             background-color: var(--background-color);
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('voteForm');
+            const fingerprintInput = document.getElementById('fingerprintInput');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    // 获取浏览器指纹
+                    const fingerprint = await getBrowserFingerprint();
+                    if (!fingerprint) {
+                        alert('无法获取浏览器指纹，请确保启用了JavaScript并允许相关权限。');
+                        return;
+                    }
+                    
+                    // 设置指纹到隐藏字段
+                    fingerprintInput.value = fingerprint;
+                    
+                    // 提交表单
+                    form.submit();
+                } catch (error) {
+                    console.error('获取浏览器指纹时出错:', error);
+                    alert('提交失败，请稍后重试。');
+                }
+            });
+        });
+    </script>
 {% endblock %}
