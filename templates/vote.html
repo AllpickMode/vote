@@ -2,54 +2,109 @@
 
 {% block title %}参与投票{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slider-captcha.css') }}">
+    <script src="{{ url_for('static', filename='js/slider-captcha.js') }}"></script>
+{% endblock %}
+
 {% block content %}
-    <div class="vote-container">
-        <h2>{{ poll.question }}</h2>
-        
-        <form method="post" class="vote-form">
+    <h2 class="page-title">{{ poll.question }}</h2>
+    
+    <form method="post" id="voteForm" class="vote-form">
+        <input type="hidden" name="fingerprint" id="fingerprintInput">
+        <input type="hidden" name="captcha_verified" id="captchaVerified" value="false">
+        <div class="options-list">
             {% for option in options %}
-            <div class="option-radio">
+            <div class="vote-option">
                 <input type="radio" 
                        id="option{{ option.id }}" 
                        name="option" 
                        value="{{ option.id }}" 
                        required>
-                <label for="option{{ option.id }}" class="radio-label">
+                <label for="option{{ option.id }}" class="option-label">
                     {{ option.option_text }}
                 </label>
             </div>
             {% endfor %}
-            
-            <div class="form-actions">
-                <button type="submit" class="button">提交投票</button>
-                <a href="{{ url_for('results', poll_id=poll.id) }}" class="button secondary">查看结果</a>
-            </div>
-        </form>
-    </div>
+        </div>
 
-    <style>
-        .radio-label {
-            display: block;
-            padding: 10px 15px;
-            margin: 5px 0;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+        <div class="slider-captcha-container" id="captcha"></div>
+        
+        <div class="verify-tip">请完成滑动验证</div>
+        
+        <div class="actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+                    <path d="M20 6L9 17l-5-5"></path>
+                </svg>
+                <span>提交投票</span>
+            </button>
+            <a href="{{ url_for('results', poll_id=poll.id) }}" class="btn btn-secondary">
+                <span>查看结果</span>
+            </a>
+        </div>
+    </form>
 
-        .option-radio input[type="radio"] {
-            display: none;
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const form = document.getElementById('voteForm');
+            const fingerprintInput = document.getElementById('fingerprintInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const captchaVerified = document.getElementById('captchaVerified');
 
-        .option-radio input[type="radio"]:checked + .radio-label {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
+            const showError = (message) => {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'flash-message';
+                errorDiv.textContent = message;
+                form.insertBefore(errorDiv, form.firstChild);
+                setTimeout(() => {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => errorDiv.remove(), 600);
+                }, 3000);
+            };
 
-        .radio-label:hover {
-            background-color: var(--background-color);
-        }
-    </style>
+            // 初始化滑动验证码
+            const captcha = new SliderCaptcha(document.getElementById('captcha'), {
+                onSuccess: function() {
+                    submitBtn.disabled = false;
+                    captchaVerified.value = 'true';
+                },
+                onFail: function() {
+                    submitBtn.disabled = true;
+                    captchaVerified.value = 'false';
+                },
+                onRefresh: function() {
+                    const verifyTip = document.querySelector('.verify-tip');
+                    verifyTip.textContent = '请完成滑动验证';
+                    verifyTip.style.color = 'var(--text-light)';
+                    submitBtn.disabled = true;
+                    captchaVerified.value = 'false';
+                }
+            });
+
+            // 表单提交前验证
+            form.addEventListener('submit', function(e) {
+                if (captchaVerified.value !== 'true') {
+                    e.preventDefault();
+                    showError('请完成滑动验证');
+                    return false;
+                }
+            });
+
+            try {
+                const fingerprint = await getBrowserFingerprint();
+                if (!fingerprint) {
+                    showError('无法获取浏览器指纹，请确保启用了JavaScript并刷新页面重试。');
+                    setTimeout(() => location.href = "{{ url_for('index') }}", 4000);
+                    return;
+                }
+                fingerprintInput.value = fingerprint;
+            } catch (error) {
+                console.error('指纹验证失败:', error);
+                showError('验证失败，请确保浏览器允许必要的权限并稍后重试。');
+                setTimeout(() => location.href = "{{ url_for('index') }}", 4000);
+            }
+        });
+    </script>
 {% endblock %}
