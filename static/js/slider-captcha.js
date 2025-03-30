@@ -42,39 +42,56 @@ class SliderCaptcha {
         let startX = 0;
         let currentX = 0;
         let isDragging = false;
+        let rafId = null;
+
+        const updateSliderPosition = (moveX) => {
+            this.slider.style.transform = `translate3d(${moveX}px, 0, 0)`;
+            currentX = moveX;
+
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+
+            rafId = requestAnimationFrame(() => {
+                // 重绘Canvas
+                this.ctx.clearRect(0, 0, this.options.width, this.options.height);
+                this.drawBackground();
+                
+                // 绘制目标位置的方块（半透明）
+                const y = this.options.height / 2 - this.options.sliderHeight / 2;
+                this.ctx.fillStyle = '#75b83e80';
+                this.ctx.fillRect(this.targetPos, y, this.options.sliderWidth, this.options.sliderHeight);
+                
+                // 绘制当前滑块位置的方块
+                this.ctx.fillStyle = '#75b83e';
+                this.ctx.fillRect(moveX, y, this.options.sliderWidth, this.options.sliderHeight);
+            });
+        };
 
         const moveHandler = (e) => {
             if (!isDragging) return;
+            e.preventDefault();
             
             const touch = e.type === 'touchmove' ? e.touches[0] : e;
             let moveX = touch.clientX - startX;
             moveX = Math.max(0, Math.min(moveX, this.options.width - this.options.sliderWidth));
             
-            this.slider.style.left = `${moveX}px`;
-            currentX = moveX;
-            
-            // 重绘Canvas
-            this.ctx.clearRect(0, 0, this.options.width, this.options.height);
-            this.drawBackground();
-            
-            // 绘制目标位置的方块（半透明）
-            const y = this.options.height / 2 - this.options.sliderHeight / 2;
-            this.ctx.fillStyle = '#75b83e80';
-            this.ctx.fillRect(this.targetPos, y, this.options.sliderWidth, this.options.sliderHeight);
-            
-            // 绘制当前滑块位置的方块
-            this.ctx.fillStyle = '#75b83e';
-            this.ctx.fillRect(moveX, y, this.options.sliderWidth, this.options.sliderHeight);
+            updateSliderPosition(moveX);
         };
 
         const upHandler = () => {
             if (!isDragging) return;
             isDragging = false;
             
-            document.removeEventListener('mousemove', moveHandler);
-            document.removeEventListener('touchmove', moveHandler);
+            document.removeEventListener('mousemove', moveHandler, { passive: false });
+            document.removeEventListener('touchmove', moveHandler, { passive: false });
             document.removeEventListener('mouseup', upHandler);
             document.removeEventListener('touchend', upHandler);
+
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
 
             const accuracy = 10;
             if (Math.abs(currentX - this.targetPos) <= accuracy) {
@@ -93,16 +110,16 @@ class SliderCaptcha {
         const downHandler = (e) => {
             isDragging = true;
             const touch = e.type === 'touchstart' ? e.touches[0] : e;
-            startX = touch.clientX - this.slider.offsetLeft;
+            startX = touch.clientX - (this.slider.getBoundingClientRect().left - this.element.getBoundingClientRect().left);
             
-            document.addEventListener('mousemove', moveHandler);
-            document.addEventListener('touchmove', moveHandler);
+            document.addEventListener('mousemove', moveHandler, { passive: false });
+            document.addEventListener('touchmove', moveHandler, { passive: false });
             document.addEventListener('mouseup', upHandler);
             document.addEventListener('touchend', upHandler);
         };
 
         this.slider.addEventListener('mousedown', downHandler);
-        this.slider.addEventListener('touchstart', downHandler);
+        this.slider.addEventListener('touchstart', downHandler, { passive: true });
     }
 
     refresh() {
@@ -115,8 +132,13 @@ class SliderCaptcha {
     }
 
     reset() {
-        this.slider.style.left = '0px';
+        this.slider.style.transition = 'transform 0.3s ease';
+        this.slider.style.transform = 'translate3d(0px, 0, 0)';
         this.sliderTrack.classList.remove('success', 'fail');
+        // 重置完成后移除transition，确保拖动时不受影响
+        setTimeout(() => {
+            this.slider.style.transition = '';
+        }, 300);
     }
 
     drawBackground() {
