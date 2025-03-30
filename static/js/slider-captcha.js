@@ -356,19 +356,5 @@ class SliderCaptcha {
         // 绘制目标位置（红色）
         this.ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
         this.ctx.fillRect(this.captchaData.target_pos, y, this.options.sliderWidth, this.options.sliderHeight);
-        
-        // 绘制当前位置的滑块（红色）
-        this.ctx.fillStyle = '#ef4444';
-        this.ctx.fillRect(0, y, this.options.sliderWidth, this.options.sliderHeight);
-        
-        // 绘制失败标记（X）
-        this.ctx.beginPath();
-        this.ctx.strokeStyle = '#ffffff';
-        this.ctx.lineWidth = 2;
-        this.ctx.moveTo(10, y + 15);
-        this.ctx.lineTo(30, y + 25);
-        this.ctx.moveTo(30, y + 15);
-        this.ctx.lineTo(10, y + 25);
-        this.ctx.stroke();
     }
 }
