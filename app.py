@@ -1,18 +1,96 @@
 
 import sqlite3
 import logging
-from datetime import datetime
+import secrets
+from datetime import datetime, timedelta
 import pytz
 from logging.handlers import RotatingFileHandler
-from flask import Flask, render_template, request, redirect, url_for, g, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify
 from functools import wraps
 
 app = Flask(__name__)
 app.config.update(
     DEBUG=False,
     SECRET_KEY='dev',
-    DATABASE='votes.db'
+    DATABASE='votes.db',
+    CAPTCHA_TOLERANCE=10,  # 验证码允许的误差范围（像素）
+    CAPTCHA_EXPIRE_SECONDS=300  # 验证码过期时间（秒）
 )
+
+def generate_captcha():
+    """生成验证码参数"""
+    return {
+        'target_pos': secrets.randbelow(200) + 40,  # 40-240之间的随机位置
+        'timestamp': datetime.now(pytz.UTC).timestamp(),
+        'token': secrets.token_urlsafe(32)
+    }
+
+@app.route('/api/captcha/generate', methods=['GET'])
+def generate_captcha_api():
+    """生成新的验证码"""
+    captcha_data = generate_captcha()
+    session['captcha'] = captcha_data
+    return jsonify({
+        'target_pos': captcha_data['target_pos'],
+        'token': captcha_data['token']
+    })
+
+@app.route('/api/captcha/verify', methods=['POST'])
+def verify_captcha():
+    """验证滑块位置"""
+    data = request.get_json()
+    if not data or 'position' not in data or 'token' not in data:
+        return jsonify({'success': False, 'message': '无效的请求参数'}), 400
+
+    captcha = session.get('captcha')
+    if not captcha:
+        return jsonify({'success': False, 'message': '验证码会话不存在'}), 400
+
+    # 验证token
+    if data['token'] != captcha['token']:
+        return jsonify({'success': False, 'message': '无效的验证码token'}), 400
+
+    # 验证是否过期
+    now = datetime.now(pytz.UTC).timestamp()
+    if now - captcha['timestamp'] > app.config['CAPTCHA_EXPIRE_SECONDS']:
+        session.pop('captcha', None)
+        return jsonify({'success': False, 'message': '验证码已过期'}), 400
+
+    # 验证位置
+    if abs(data['position'] - captcha['target_pos']) <= app.config['CAPTCHA_TOLERANCE']:
+        # 验证成功后生成一个一次性token
+        verification_token = secrets.token_urlsafe(32)
+        session['verification'] = {
+            'token': verification_token,
+            'timestamp': now
+        }
+        session.pop('captcha', None)  # 清除已使用的验证码
+        return jsonify({
+            'success': True,
+            'verification_token': verification_token
+        })
+    
+    return jsonify({'success': False, 'message': '验证失败'}), 400
+
+def verify_captcha_token(token):
+    """验证一次性验证token"""
+    verification = session.get('verification')
+    if not verification:
+        return False
+
+    if token != verification['token']:
+        return False
+
+    # 验证是否过期（验证token的有效期比验证码短）
+    now = datetime.now(pytz.UTC).timestamp()
+    if now - verification['timestamp'] > 60:  # 1分钟内有效
+        session.pop('verification', None)
+        return False
+
+    # 使用后立即删除，确保一次性使用
+    session.pop('verification', None)
+    return True
+
 
 def setup_logging():
     handler = RotatingFileHandler('app.log', maxBytes=1024 * 1024, backupCount=10)
@@ -205,17 +283,12 @@ def vote(poll_id):
     if request.method == 'POST':
         fingerprint = request.form.get('fingerprint')
         option_id = request.form.get('option')
-        captcha_verified = request.form.get('captcha_verified')
+        verification_token = request.form.get('verification_token')
 
-        if captcha_verified != 'true':
-            flash('请完成滑动验证')
+        if not verification_token or not verify_captcha_token(verification_token):
+            flash('验证码验证失败，请重新完成验证')
             return render_template('vote.html', poll=poll, options=options)
-        captcha_verified = request.form.get('captcha_verified')
-
-        if not captcha_verified or captcha_verified != 'true':
-            flash('请完成滑动验证')
-            return render_template('vote.html', poll=poll, options=options)
-        
+            
         if not fingerprint:
             flash('无法验证浏览器指纹，请确保启用了JavaScript')
             return render_template('vote.html', poll=poll, options=options)

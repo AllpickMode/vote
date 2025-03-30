@@ -13,7 +13,7 @@
     
     <form method="post" id="voteForm" class="vote-form">
         <input type="hidden" name="fingerprint" id="fingerprintInput">
-        <input type="hidden" name="captcha_verified" id="captchaVerified" value="false">
+        <input type="hidden" name="verification_token" id="verificationToken">
         <div class="options-list">
             {% for option in options %}
             <div class="vote-option">
@@ -51,7 +51,7 @@
             const form = document.getElementById('voteForm');
             const fingerprintInput = document.getElementById('fingerprintInput');
             const submitBtn = document.getElementById('submitBtn');
-            const captchaVerified = document.getElementById('captchaVerified');
+            const verificationToken = document.getElementById('verificationToken');
 
             const showError = (message) => {
                 const errorDiv = document.createElement('div');
@@ -68,26 +68,38 @@
             const captcha = new SliderCaptcha(document.getElementById('captcha'), {
                 onSuccess: function() {
                     submitBtn.disabled = false;
-                    captchaVerified.value = 'true';
+                    const verifyTip = document.querySelector('.verify-tip');
+                    verifyTip.textContent = '验证成功';
+                    verifyTip.style.color = '#75b83e';
                 },
                 onFail: function() {
                     submitBtn.disabled = true;
-                    captchaVerified.value = 'false';
+                    verificationToken.value = '';
+                    const verifyTip = document.querySelector('.verify-tip');
+                    verifyTip.textContent = '验证失败，请重试';
+                    verifyTip.style.color = '#ff4d4f';
                 },
                 onRefresh: function() {
+                    submitBtn.disabled = true;
+                    verificationToken.value = '';
                     const verifyTip = document.querySelector('.verify-tip');
                     verifyTip.textContent = '请完成滑动验证';
                     verifyTip.style.color = 'var(--text-light)';
-                    submitBtn.disabled = true;
-                    captchaVerified.value = 'false';
                 }
             });
 
             // 表单提交前验证
             form.addEventListener('submit', function(e) {
-                if (captchaVerified.value !== 'true') {
+                if (!verificationToken.value) {
                     e.preventDefault();
                     showError('请完成滑动验证');
+                    return false;
+                }
+
+                const selectedOption = form.querySelector('input[name="option"]:checked');
+                if (!selectedOption) {
+                    e.preventDefault();
+                    showError('请选择一个选项');
                     return false;
                 }
             });
