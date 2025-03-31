@@ -155,13 +155,29 @@
     }
 }
 
-canvas.slider-captcha-canvas {
+.slider-captcha-image-container {
+    position: relative;
+    overflow: hidden;
     border: 1px solid var(--border);
     border-radius: var(--radius);
+    background: var(--bg);
+}
+
+.slider-captcha-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 @media (prefers-color-scheme: dark) {
-    canvas.slider-captcha-canvas {
+    .slider-captcha-image-container {
         border-color: rgba(var(--primary-rgb), 0.1);
     }
+}
+
+.slider-captcha-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

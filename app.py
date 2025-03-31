@@ -5,8 +5,11 @@ import secrets
 from datetime import datetime, timedelta
 import pytz
 from logging.handlers import RotatingFileHandler
-from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify, send_file
 from functools import wraps
+from PIL import Image, ImageDraw
+import io
+import os
 
 app = Flask(__name__)
 app.config.update(
@@ -17,23 +20,58 @@ app.config.update(
     CAPTCHA_EXPIRE_SECONDS=300  # 验证码过期时间（秒）
 )
 
-def generate_captcha():
-    """生成验证码参数"""
-    return {
-        'target_pos': secrets.randbelow(200) + 40,  # 40-240之间的随机位置
+def generate_captcha_image(width=280, height=155, slider_width=40, slider_height=40):
+    """生成验证码图片"""
+    # 创建背景图
+    image = Image.new('RGB', (width, height), '#f3f4f6')
+    draw = ImageDraw.Draw(image)
+    
+    # 绘制网格
+    for x in range(0, width, 20):
+        draw.line([(x, 0), (x, height)], fill='#e5e7eb', width=1)
+    for y in range(0, height, 20):
+        draw.line([(0, y), (width, y)], fill='#e5e7eb', width=1)
+    
+    # 生成随机目标位置
+    target_pos = secrets.randbelow(200) + 40  # 40-240之间的随机位置
+    y = height // 2 - slider_height // 2
+    
+    # 绘制目标位置（半透明绿色）
+    for i in range(slider_width):
+        for j in range(slider_height):
+            if 0 <= target_pos + i < width and 0 <= y + j < height:
+                r, g, b = 117, 184, 62  # 绿色
+                alpha = 0.3  # 透明度
+                current = image.getpixel((target_pos + i, y + j))
+                new_color = tuple(int(alpha * c1 + (1 - alpha) * c2) for c1, c2 in zip((r, g, b), current))
+                image.putpixel((target_pos + i, y + j), new_color)
+    
+    # 生成token和时间戳
+    captcha_data = {
+        'target_pos': target_pos,
         'timestamp': datetime.now(pytz.UTC).timestamp(),
         'token': secrets.token_urlsafe(32)
     }
+    
+    # 将图片转换为字节流
+    img_byte_arr = io.BytesIO()
+    image.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    
+    return img_byte_arr, captcha_data
 
 @app.route('/api/captcha/generate', methods=['GET'])
 def generate_captcha_api():
-    """生成新的验证码"""
-    captcha_data = generate_captcha()
+    """生成新的验证码图片"""
+    img_bytes, captcha_data = generate_captcha_image()
     session['captcha'] = captcha_data
-    return jsonify({
-        'target_pos': captcha_data['target_pos'],
-        'token': captcha_data['token']
-    })
+    
+    return send_file(
+        img_bytes,
+        mimetype='image/png',
+        as_attachment=False,
+        download_name='captcha.png'
+    )
 
 @app.route('/api/captcha/verify', methods=['POST'])
 def verify_captcha():
