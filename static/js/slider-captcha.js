@@ -1,4 +1,3 @@
-
 class SliderCaptcha {
     constructor(element, options = {}) {
         this.element = element;
@@ -11,11 +10,11 @@ class SliderCaptcha {
             onFail: options.onFail || function() {},
             onRefresh: options.onRefresh || function() {}
         };
+
         this.captchaData = null;
         this.isDragging = false;
         this.animationFrame = null;
         this.destroyed = false;
-        this.init();
         
         // 添加清理方法
         this.destroy = () => {
@@ -33,6 +32,7 @@ class SliderCaptcha {
 
         // 确保在页面卸载时清理资源
         window.addEventListener('unload', this.destroy);
+        this.init();
     }
 
     startDragging() {
@@ -76,7 +76,20 @@ class SliderCaptcha {
         try {
             const response = await fetch('/api/captcha/generate');
             if (!response.ok) throw new Error('获取验证码失败');
-            return await response.json();
+            const { image, signature } = await response.json();
+            
+            // 创建Image对象加载base64图片
+            const img = new Image();
+            img.src = `data:image/png;base64,${image}`;
+            await new Promise((resolve) => img.onload = resolve);
+            
+            // 绘制完整服务端生成的验证码图片
+            this.ctx.clearRect(0, 0, this.options.width, this.options.height);
+            this.ctx.drawImage(img, 0, 0);
+            
+            return {
+                signature: signature
+            };
         } catch (error) {
             console.error('获取验证码失败:', error);
             throw error;
@@ -85,22 +98,25 @@ class SliderCaptcha {
 
     async verifyCaptcha(position) {
         try {
-            const response = await fetch('/api/captcha/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    position: position,
-                    token: this.captchaData.token
-                })
-            });
-            return await response.json();
+        const response = await fetch('/api/captcha/verify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Captcha-Signature': this.captchaData.signature
+            },
+            body: JSON.stringify({
+                position: position,
+                verification_token: this.captchaData.verification_token
+            })
+        });
+            const result = await response.json();
+            return result;
         } catch (error) {
             console.error('验证失败:', error);
             return { success: false, message: '验证请求失败' };
         }
     }
+
 
     bindEvents() {
         let startX = 0;
@@ -129,11 +145,7 @@ class SliderCaptcha {
                 this.ctx.fillStyle = 'rgba(117, 184, 62, 0.1)';
                 this.ctx.fillRect(0, y, moveX + this.options.sliderWidth, this.options.sliderHeight);
                 
-                // 绘制目标位置（半透明）
-                this.ctx.fillStyle = 'rgba(117, 184, 62, 0.3)';
-                this.ctx.fillRect(this.captchaData.target_pos, y, this.options.sliderWidth, this.options.sliderHeight);
-                
-                // 绘制当前滑块位置
+                // 仅绘制当前滑块位置
                 this.ctx.fillStyle = '#75b83e';
                 this.ctx.fillRect(moveX, y, this.options.sliderWidth, this.options.sliderHeight);
                 
@@ -179,7 +191,8 @@ class SliderCaptcha {
                     this.sliderTrack.classList.add('success');
                     this.drawSuccessState();
                     // 更新验证token
-                    document.getElementById('verificationToken').value = result.verification_token;
+                    // 使用更安全的HTTPOnly Cookie存储验证结果
+                    document.cookie = `captcha_verify=${result.verification_token}; Path=/; Secure; SameSite=Strict`;
                     this.options.onSuccess();
                 } else {
                     // 失败状态的视觉效果
@@ -304,57 +317,57 @@ class SliderCaptcha {
     }
 
     drawPuzzle() {
-        if (!this.captchaData) return;
-        
-        const y = this.options.height / 2 - this.options.sliderHeight / 2;
-        
-        // 绘制目标位置（半透明）
-        this.ctx.fillStyle = 'rgba(117, 184, 62, 0.3)';
-        this.ctx.fillRect(this.captchaData.target_pos, y, this.options.sliderWidth, this.options.sliderHeight);
-        
-        // 绘制初始滑块位置
-        this.ctx.fillStyle = '#75b83e';
-        this.ctx.fillRect(0, y, this.options.sliderWidth, this.options.sliderHeight);
+        // 拼图绘制完全由服务端处理
+        // 此方法保留空实现以保持API兼容性
     }
 
     drawSuccessState() {
-        const y = this.options.height / 2 - this.options.sliderHeight / 2;
+        const centerX = this.options.width / 2;
+        const centerY = this.options.height / 2;
         
         // 清除画布
         this.ctx.clearRect(0, 0, this.options.width, this.options.height);
         this.drawBackground();
         
-        // 绘制成功状态的轨迹
+        // 绘制绿色背景圆
         this.ctx.fillStyle = 'rgba(117, 184, 62, 0.2)';
-        this.ctx.fillRect(0, y, this.captchaData.target_pos + this.options.sliderWidth, this.options.sliderHeight);
-        
-        // 绘制成功位置的滑块
-        this.ctx.fillStyle = '#75b83e';
-        this.ctx.fillRect(this.captchaData.target_pos, y, this.options.sliderWidth, this.options.sliderHeight);
-        
-        // 绘制成功标记（对勾）
         this.ctx.beginPath();
-        this.ctx.strokeStyle = '#ffffff';
-        this.ctx.lineWidth = 2;
-        this.ctx.moveTo(this.captchaData.target_pos + 12, y + 20);
-        this.ctx.lineTo(this.captchaData.target_pos + 17, y + 25);
-        this.ctx.lineTo(this.captchaData.target_pos + 28, y + 15);
+        this.ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // 绘制成功对勾
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = '#75b83e';
+        this.ctx.lineWidth = 3;
+        this.ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+        this.ctx.moveTo(centerX - 8, centerY);
+        this.ctx.lineTo(centerX, centerY + 8);
+        this.ctx.lineTo(centerX + 12, centerY - 10);
         this.ctx.stroke();
     }
 
     drawFailState() {
-        const y = this.options.height / 2 - this.options.sliderHeight / 2;
+        const centerX = this.options.width / 2;
+        const centerY = this.options.height / 2;
         
         // 清除画布
         this.ctx.clearRect(0, 0, this.options.width, this.options.height);
         this.drawBackground();
         
-        // 绘制失败状态的轨迹
+        // 绘制红色背景圆
         this.ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
-        this.ctx.fillRect(0, y, this.options.width, this.options.sliderHeight);
+        this.ctx.beginPath();
+        this.ctx.arc(centerX, centerY, 30, 0, Math.PI * 2);
+        this.ctx.fill();
         
-        // 绘制目标位置（红色）
-        this.ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
-        this.ctx.fillRect(this.captchaData.target_pos, y, this.options.sliderWidth, this.options.sliderHeight);
+        // 绘制错误叉号
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = '#ef4444';
+        this.ctx.lineWidth = 3;
+        this.ctx.moveTo(centerX - 10, centerY - 10);
+        this.ctx.lineTo(centerX + 10, centerY + 10);
+        this.ctx.moveTo(centerX + 10, centerY - 10);
+        this.ctx.lineTo(centerX - 10, centerY + 10);
+        this.ctx.stroke();
     }
 }

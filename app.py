@@ -2,10 +2,13 @@
 import sqlite3
 import logging
 import secrets
+import random
 from datetime import datetime, timedelta
 import pytz
 from logging.handlers import RotatingFileHandler
-from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify, send_file, make_response, send_from_directory
+from io import BytesIO
+from PIL import Image, ImageDraw
 from functools import wraps
 
 app = Flask(__name__)
@@ -17,78 +20,231 @@ app.config.update(
     CAPTCHA_EXPIRE_SECONDS=300  # 验证码过期时间（秒）
 )
 
-def generate_captcha():
-    """生成验证码参数"""
-    return {
-        'target_pos': secrets.randbelow(200) + 40,  # 40-240之间的随机位置
-        'timestamp': datetime.now(pytz.UTC).timestamp(),
-        'token': secrets.token_urlsafe(32)
-    }
+# 新增数据库表结构
+CAPTCHA_SCHEMA = """
+CREATE TABLE IF NOT EXISTS captcha_data (
+    token TEXT PRIMARY KEY,
+    target_pos INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS verification_tokens (
+    token TEXT PRIMARY KEY,
+    expires REAL NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+"""
+
+def init_captcha_tables():
+    """初始化验证码相关数据表"""
+    with app.app_context():
+        db = get_db()
+        db.executescript(CAPTCHA_SCHEMA)
+        db.commit()
+
+def generate_captcha_signature(token, target_pos):
+    """生成验证码数据的HMAC签名"""
+    secret_key = app.config['SECRET_KEY'].encode()
+    # 加入时间戳要素防止重放攻击
+    timestamp = str(int(datetime.now(pytz.UTC).timestamp()))
+    message = f"{token}:{target_pos}:{timestamp}".encode()
+    return hmac.new(secret_key, message, hashlib.sha256).hexdigest()
+
+def store_verification_token(token, expires):
+    """存储验证令牌到数据库"""
+    db = get_db()
+    db.execute(
+        'INSERT INTO verification_tokens (token, expires) VALUES (?, ?)',
+        (token, expires)
+    )
+    db.commit()
+
+def store_captcha_data(token, target_pos):
+    """存储验证码数据到数据库"""
+    db = get_db()
+    db.execute(
+        'INSERT INTO captcha_data (token, target_pos) VALUES (?, ?)',
+        (token, target_pos)
+    )
+    db.commit()
+
+def get_stored_target_pos(token):
+    """从数据库获取存储的目标位置"""
+    db = get_db()
+    result = db.execute(
+        'SELECT target_pos FROM captcha_data WHERE token = ?',
+        (token,)
+    ).fetchone()
+    return result['target_pos'] if result else None
+
+def generate_captcha(verification_token):
+    """生成验证码图片并存储到数据库"""
+    # 创建背景图
+    bg_width, bg_height = 280, 150
+    bg = Image.new('RGB', (bg_width, bg_height), (255, 255, 255))
+    draw = ImageDraw.Draw(bg)
+    
+    # 绘制随机干扰线
+    for _ in range(5):
+        draw.line([
+            (secrets.randbelow(bg_width), secrets.randbelow(bg_height)),
+            (secrets.randbelow(bg_width), secrets.randbelow(bg_height))
+        ], fill=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), width=2)
+
+    # 生成拼图滑块位置
+    target_pos = secrets.randbelow(200) + 40  # 40-240之间的随机位置
+    puzzle_size = 40
+    
+    # 绘制目标缺口
+    draw.rounded_rectangle(
+        (target_pos, 50, target_pos + puzzle_size, 90),
+        radius=8, fill=(200, 200, 200), outline=(0, 0, 0), width=2
+    )
+    
+    # 在前景绘制滑块图形（用户不可见，仅用于后端记录）
+    slider = Image.new('RGBA', (puzzle_size, 40))
+    slider_draw = ImageDraw.Draw(slider)
+    slider_draw.rounded_rectangle(
+        (0, 0, puzzle_size, 40),
+        radius=8, fill=(255, 255, 255, 0), outline=(0, 0, 0), width=2
+    )
+    # 添加随机旋转（-15到+15度）
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True), 
+           (target_pos, 50), slider.rotate(random.randint(-15, 15), expand=True))
+    
+    # 将图片保存到字节流
+    img_byte_arr = BytesIO()
+    bg.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    
+    # 存储到数据库
+    store_captcha_data(verification_token, target_pos)
+    return img_byte_arr
+
+import base64
+import hmac
+import hashlib
 
 @app.route('/api/captcha/generate', methods=['GET'])
 def generate_captcha_api():
     """生成新的验证码"""
-    captcha_data = generate_captcha()
-    session['captcha'] = captcha_data
-    return jsonify({
-        'target_pos': captcha_data['target_pos'],
-        'token': captcha_data['token']
-    })
+    # 生成验证令牌
+    verification_token = secrets.token_urlsafe(32)
+    expires = datetime.now(pytz.UTC).timestamp() + app.config['CAPTCHA_EXPIRE_SECONDS']
+    
+    # 生成验证码图片并存储到数据库
+    img_byte_arr = generate_captcha(verification_token)
+    
+    # 存储验证令牌有效期
+    store_verification_token(verification_token, expires)
+    
+    # 直接返回图片二进制流
+    # 设置禁止缓存的响应头
+    response = make_response(send_file(
+        img_byte_arr,
+        mimetype='image/png',
+        as_attachment=False,
+        download_name='captcha.png'
+    ))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/api/captcha/verify', methods=['POST'])
 def verify_captcha():
     """验证滑块位置"""
     data = request.get_json()
-    if not data or 'position' not in data or 'token' not in data:
+    required_fields = ['position', 'verification_token']
+    if not data or any(field not in data for field in required_fields):
         return jsonify({'success': False, 'message': '无效的请求参数'}), 400
 
-    captcha = session.get('captcha')
-    if not captcha:
-        return jsonify({'success': False, 'message': '验证码会话不存在'}), 400
+    db = get_db()
+    # 从数据库获取验证令牌和存储的目标位置
+    record = db.execute(
+        '''SELECT v.expires, c.target_pos 
+           FROM verification_tokens v
+           JOIN captcha_data c ON v.token = c.token
+           WHERE v.token = ?''',
+        (data['verification_token'],)
+    ).fetchone()
 
-    # 验证token
-    if data['token'] != captcha['token']:
-        return jsonify({'success': False, 'message': '无效的验证码token'}), 400
-
-    # 验证是否过期
+    if not record:
+        return jsonify({'success': False, 'message': '验证令牌无效'}), 400
+        
+    # 检查过期时间
     now = datetime.now(pytz.UTC).timestamp()
-    if now - captcha['timestamp'] > app.config['CAPTCHA_EXPIRE_SECONDS']:
-        session.pop('captcha', None)
+    if now > record['expires']:
+        db.execute(
+            'DELETE FROM verification_tokens WHERE token = ?',
+            (data['verification_token'],)
+        )
+        db.commit()
         return jsonify({'success': False, 'message': '验证码已过期'}), 400
 
-    # 验证位置
-    if abs(data['position'] - captcha['target_pos']) <= app.config['CAPTCHA_TOLERANCE']:
-        # 验证成功后生成一个一次性token
-        verification_token = secrets.token_urlsafe(32)
-        session['verification'] = {
-            'token': verification_token,
-            'timestamp': now
-        }
-        session.pop('captcha', None)  # 清除已使用的验证码
-        return jsonify({
-            'success': True,
-            'verification_token': verification_token
-        })
+    # 从数据库获取目标位置
+    target_pos = record['target_pos']
+    tolerance = app.config['CAPTCHA_TOLERANCE']
     
-    return jsonify({'success': False, 'message': '验证失败'}), 400
+    # 获取请求签名
+    received_signature = request.headers.get('X-Captcha-Signature')
+    
+    # 使用数据库存储的目标位置生成签名
+    expected_signature = generate_captcha_signature(data['verification_token'], target_pos)
+    if not hmac.compare_digest(received_signature, expected_signature):
+        return jsonify({'success': False, 'message': '签名验证失败'}), 400
+    
+    # 验证滑块位置
+    if abs(data['position'] - target_pos) > tolerance:
+        return jsonify({'success': False, 'message': '验证未通过'}), 400
+
+    # 生成最终验证令牌（用于业务逻辑）
+    final_token = secrets.token_urlsafe(32)
+    
+    # 清理已使用的验证数据
+    db.execute(
+        'DELETE FROM verification_tokens WHERE token = ?',
+        (data['verification_token'],)
+    )
+    db.execute(
+        'DELETE FROM captcha_data WHERE token = ?',
+        (data['verification_token'],)
+    )
+    db.commit()
+    
+    return jsonify({
+        'success': True,
+        'final_token': final_token
+    })
 
 def verify_captcha_token(token):
     """验证一次性验证token"""
-    verification = session.get('verification')
-    if not verification:
+    db = get_db()
+    # 从数据库验证最终令牌
+    token_record = db.execute(
+        'SELECT expires FROM verification_tokens WHERE token = ?',
+        (token,)
+    ).fetchone()
+
+    if not token_record:
         return False
 
-    if token != verification['token']:
-        return False
-
-    # 验证是否过期（验证token的有效期比验证码短）
+    # 检查过期时间
     now = datetime.now(pytz.UTC).timestamp()
-    if now - verification['timestamp'] > 60:  # 1分钟内有效
-        session.pop('verification', None)
+    if now > token_record['expires']:
+        db.execute(
+            'DELETE FROM verification_tokens WHERE token = ?',
+            (token,)
+        )
+        db.commit()
         return False
 
-    # 使用后立即删除，确保一次性使用
-    session.pop('verification', None)
+    # 验证后立即删除令牌
+    db.execute(
+        'DELETE FROM verification_tokens WHERE token = ?',
+        (token,)
+    )
+    db.commit()
     return True
 
 
@@ -130,6 +286,9 @@ def init_db():
         db = get_db()
         with open('schema.sql', 'r', encoding='utf-8') as f:
             db.executescript(f.read())
+        
+        # 初始化验证码相关数据表
+        init_captcha_tables()
         
         try:
             utc_now = datetime.now(pytz.UTC).strftime('%Y-%m-%d %H:%M:%S')
