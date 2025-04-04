@@ -817,6 +817,1076 @@ input:checked + .switch-slider:before {
     background-color: #fff;
 }
 
+/* 投票页面样式优化 */
+.vote-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.vote-form {
+    width: 100%;
+    background: var(--el-bg-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    padding: 32px;
+}
+
+/* 标题样式 */
+.vote-title {
+    font-size: 24px;
+    color: var(--el-text-color-primary);
+    margin-bottom: 32px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* 投票选项列表 */
+.options-list {
+    margin-bottom: 32px;
+}
+
+/* 投票选项 */
+.vote-option {
+    position: relative;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.vote-option:last-child {
+    margin-bottom: 0;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 0px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 6px;
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.0;
+}
+
+/* 单选框样式 */
+.option-label::before {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--el-border-color);
+    border-radius: 50%;
+    background-color: var(--el-fill-color);
+    transition: all 0.3s;
+}
+
+/* 选中状态 */
+.vote-option input[type="radio"]:checked + .option-label {
+    background-color: var(--el-color-primary-light-9);
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+} 
+
+ .vote-option input[type="radio"]:checked + .option-label::before {
+    border-color: var(--el-color-primary);
+    background-color: var(--el-color-primary);
+}
+
+.vote-option input[type="radio"]:checked + .option-label::after {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* 验证码区域 */
+.captcha-container {
+    background-color: var(--el-fill-color);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 32px;
+}
+
+.captcha-title {
+    font-size: 14px;
+    color: var(--el-text-color-regular);
+    margin-bottom: 16px;
+}
+
+.captcha-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.captcha-image {
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.captcha-input {
+    flex: 1;
+    height: 40px;
+    padding: 0 16px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    color: var(--el-text-color-primary);
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 4px;
+}
+
+.btn-refresh {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    background-color: var(--el-fill-color-darker);
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* 按钮区域 */
+.actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.actions .btn {
+    min-width: 120px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+/* 错误提示 */
+.flash-message {
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .vote-container {
+        margin: 20px auto;
+        padding: 0 16px;
+    }
+
+    .vote-form {
+        padding: 24px;
+    }
+
+    .vote-title {
+        font-size: 20px;
+        margin-bottom: 24px;
+    }
+
+    .captcha-box {
+        flex-wrap: wrap;
+    }
+
+    .captcha-input {
+        width: 100%;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .actions .btn {
+        width: 100%;
+    }
+}
+
+/* 投票选项样式 */
+.vote-option {
+    position: relative;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.option-label {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px 12px 45px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 6px;
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+    position: relative;
+}
+
+.option-label:hover {
+    border-color: var(--el-color-primary);
+    background-color: var(--el-color-primary-light-9);
+}
+
+.option-label::before {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--el-border-color);
+    border-radius: 50%;
+    background-color: var(--el-fill-color);
+    transition: all 0.3s;
+}
+
+/* 验证码区域样式 */
+.captcha-container {
+    background-color: var(--el-fill-color);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 32px auto;
+    border: 1px solid var(--el-border-color);
+    max-width: 400px;
+    text-align: center;
+}
+
+.captcha-title {
+    font-size: 14px;
+    color: var(--el-text-color-regular);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.captcha-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.captcha-image {
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.captcha-input {
+    width: 160px;
+    height: 40px;
+    padding: 0 12px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    color: var(--el-text-color-primary);
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 4px;
+}
+
+.btn-refresh {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    background-color: var(--el-fill-color-darker);
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* 按钮区域样式统一 */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.actions .btn {
+    width: 140px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    padding: 0 20px;
+}
+
+.btn-primary {
+    background-color: var(--el-color-primary);
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--el-color-primary-light-3);
+}
+
+.btn-secondary {
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    color: var(--el-text-color-regular);
+}
+
+.btn-secondary:hover {
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+}
+
+/* 投票选项样式优化 */
+.vote-option {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.vote-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.option-label {
+    display: block;
+    position: relative;
+    padding: 12px 16px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.option-label:hover {
+    border-color: var(--el-color-primary);
+    background-color: var(--el-color-primary-light-9);
+    transform: translateX(4px);
+}
+
+.vote-option input[type="radio"]:checked + .option-label {
+    background-color: var(--el-color-primary-light-9);
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+    transform: translateX(4px);
+}
+
+/* 投票选项容器 */
+.options-list {
+    margin: 0 0 32px 0;
+}
+
+/* 投票选项 */
+.vote-option {
+    position: relative;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+}
+
+.vote-option:last-child {
+    margin-bottom: 0;
+}
+
+.vote-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* 选项标签 */
+.option-label {
+    display: block;
+    position: relative;
+    padding: 14px 20px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 6px;
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 15px;
+    line-height: 1.5;
+    word-break: break-word;
+    user-select: none;
+}
+
+/* 选项悬浮效果 */
+.option-label:hover {
+    border-color: var(--el-color-primary);
+    background-color: var(--el-color-primary-light-9);
+    transform: translateX(4px);
+}
+
+/* 选项选中效果 */
+.vote-option input[type="radio"]:checked + .option-label {
+    background-color: var(--el-color-primary-light-9);
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+    transform: translateX(4px);
+    font-weight: 500;
+}
+
+/* 选项左侧边框效果 */
+.option-label::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--el-color-primary);
+    border-radius: 3px 0 0 3px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.option-label:hover::before,
+.vote-option input[type="radio"]:checked + .option-label::before {
+    opacity: 1;
+}
+
+/* 选项点击效果 */
+.option-label:active {
+    transform: translateX(2px);
+}
+
+/* 选项禁用状态 */
+.vote-option.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.vote-option.disabled .option-label {
+    cursor: not-allowed;
+}
+
+.vote-option.disabled .option-label:hover {
+    transform: none;
+    border-color: var(--el-border-color);
+    background-color: var(--el-fill-color-darker);
+}
+
+/* 选项内容布局 */
+.option-content {
+    position: relative;
+    z-index: 1;
+}
+
+.captcha-input:focus {
+    border-color: var(--el-color-primary);
+    box-shadow: 0 0 0 2px var(--el-color-primary-light-8);
+}
+
+/* 按钮样式增强 */
+.btn-primary {
+    background-color: var(--el-color-primary);
+    border: none;
+    color: white;
+    font-weight: 500;
+    height: 44px;
+    min-width: 140px;
+    font-size: 15px;
+}
+
+.btn-primary:hover {
+    background-color: var(--el-color-primary-light-3);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    color: var(--el-text-color-regular);
+    height: 44px;
+    min-width: 140px;
+    font-size: 15px;
+}
+
+.btn-secondary:hover {
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+}
+
+/* 错误提示增强 */
+.flash-message {
+    background-color: var(--el-color-danger-light-9);
+    border: 1px solid var(--el-color-danger);
+    color: var(--el-color-danger);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 页面标题增强 */
+.vote-title {
+    font-size: 26px;
+    color: var(--el-text-color-primary);
+    margin-bottom: 32px;
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.vote-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: var(--el-color-primary);
+    border-radius: 2px;
+}
+
+/* 表单容器增强 */
+.vote-form {
+    background: var(--el-bg-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    padding: 32px;
+    border: 1px solid var(--el-border-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.vote-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 32px rgba(0, 0, 0, 0.25);
+}
+
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    color: var(--el-text-color-primary);
+    margin-bottom: 32px;
+    font-weight: 500;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: var(--el-color-primary);
+    border-radius: 2px;
+}
+
+/* 投票选项样式 */
+.options-list {
+    margin-bottom: 32px;
+}
+
+.vote-option {
+    position: relative;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.vote-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.option-label {
+    display: block;
+    padding: 16px 16px 16px 48px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 6px;
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.option-label::before {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--el-border-color);
+    border-radius: 50%;
+    background-color: var(--el-fill-color);
+    transition: all 0.3s;
+}
+
+.vote-option input[type="radio"]:checked + .option-label {
+    background-color: var(--el-color-primary-light-9);
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+}
+
+.vote-option input[type="radio"]:checked + .option-label::before {
+    border-color: var(--el-color-primary);
+    background-color: var(--el-color-primary);
+    box-shadow: 0 0 0 2px var(--el-color-primary-light-8);
+}
+
+.vote-option input[type="radio"]:checked + .option-label::after {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.vote-option:hover .option-label {
+    border-color: var(--el-color-primary);
+    transform: translateX(4px);
+}
+
+/* 验证码区域样式 */
+.captcha-container {
+    background-color: var(--el-fill-color);
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 32px;
+}
+
+.captcha-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.captcha-image {
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-refresh {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    background-color: var(--el-fill-color-darker);
+    color: var(--el-text-color-regular);
+    transition: all 0.3s;
+}
+
+.btn-refresh:hover {
+    color: var(--el-color-primary);
+    border-color: var(--el-color-primary);
+    transform: rotate(180deg);
+}
+
+.captcha-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 16px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 4px;
+    color: var(--el-text-color-primary);
+    font-size: 16px;
+    letter-spacing: 4px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.captcha-input:focus {
+    border-color: var(--el-color-primary);
+    box-shadow: 0 0 0 2px var(--el-color-primary-light-8);
+}
+
+/* 操作按钮区域 */
+.actions {
+    display: flex;
+    gap: 16px;
+}
+
+.actions .btn {
+    flex: 1;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 15px;
+    border-radius: 6px;
+}
+
+.btn-primary {
+    background-color: var(--el-color-primary);
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--el-color-primary-light-3);
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    background-color: var(--el-fill-color);
+    border: 1px solid var(--el-border-color);
+    color: var(--el-text-color-disabled);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    color: var(--el-text-color-regular);
+}
+
+.btn-secondary:hover {
+    border-color: var(--el-color-primary);
+    color: var(--el-color-primary);
+    background-color: var(--el-color-primary-light-9);
+}
+
+/* 错误提示消息 */
+.flash-message {
+    background-color: var(--el-color-danger-light-9);
+    color: var(--el-color-danger);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border: 1px solid var(--el-color-danger);
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .vote-form {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .actions .btn {
+        width: 100%;
+    }
+}
+
+/* 投票选项动画效果 */
+.vote-option {
+    transform-origin: left center;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.vote-option input[type="radio"]:checked + .option-label::before {
+    animation: pulse 0.3s ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translateY(-50%) scale(0.8);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.2);
+    }
+    100% {
+        transform: translateY(-50%) scale(1);
+    }
+}
+
+/* 验证码输入增强 */
+.captcha-input {
+    position: relative;
+    overflow: hidden;
+}
+
+.captcha-input:focus::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--el-color-primary);
+    animation: slideRight 2s infinite;
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* 按钮加载状态 */
+.btn-primary.loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-primary.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 提交成功动画 */
+.btn-primary.success {
+    background-color: var(--el-color-success) !important;
+    transition: background-color 0.3s;
+}
+
+.btn-primary.success::before {
+    content: '✓';
+    position: absolute;
+    color: white;
+    animation: checkmark 0.3s ease-out;
+}
+
+@keyframes checkmark {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 验证码刷新按钮动画 */
+.btn-refresh svg {
+    transition: transform 0.3s ease;
+}
+
+.btn-refresh:hover svg {
+    transform: rotate(180deg);
+}
+
+.btn-refresh:active svg {
+    transform: rotate(360deg);
+}
+
+/* 选项悬浮效果增强 */
+.vote-option {
+    position: relative;
+}
+
+.vote-option::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: var(--el-color-primary);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+}
+
+.vote-option:hover::before {
+    transform: scaleY(1);
+}
+
+/* 表单验证反馈 */
+.vote-form.submitting .btn-primary {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.vote-form.submitting .vote-option {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* 验证码容器增强 */
+.captcha-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.captcha-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        var(--el-color-primary-light-5),
+        var(--el-color-primary),
+        var(--el-color-primary-light-5)
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.captcha-container:focus-within::before {
+    opacity: 1;
+}
+
+/* 错误消息动画 */
+.flash-message {
+    animation: slideDown 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}
+
+/* 投票选项选中效果增强 */
+.vote-option input[type="radio"]:checked + .option-label {
+    position: relative;
+    overflow: hidden;
+}
+
+.vote-option input[type="radio"]:checked + .option-label::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, 
+        var(--el-color-primary-light-8) 0%,
+        transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    opacity: 0.2;
+    animation: rippleEffect 0.6s ease-out;
+}
+
+@keyframes rippleEffect {
+    from {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.4;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+}
+
 /* 基础样式 */
 * {
     margin: 0;
@@ -1005,7 +2075,6 @@ body {
 }
 
 .option-label::before {
-    content: '';
     position: absolute;
     left: 0;
     top: 2px;
@@ -1022,7 +2091,6 @@ body {
 }
 
 .vote-option input[type="radio"]:checked + .option-label::after {
-    content: '';
     position: absolute;
     left: 5px;
     top: 7px;
@@ -1513,7 +2581,7 @@ button[onclick="addOption()"] svg {
 button[type="submit"] {
     width: 100%;
     height: 40px;
-    margin-top: 8px;
+
 }
 
 button[type="submit"] svg {
