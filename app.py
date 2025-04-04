@@ -9,22 +9,17 @@ import pytz
 from logging.handlers import RotatingFileHandler
 from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify, send_file, make_response, send_from_directory
 from io import BytesIO
-from PIL import Image, ImageDraw
 from functools import wraps
 
 app = Flask(__name__)
 app.config.update(
     DEBUG=False,
     SECRET_KEY='dev',
-    DATABASE=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.db'),
-    CAPTCHA_TOLERANCE=10,  # 验证码允许的误差范围（像素）
-    CAPTCHA_EXPIRE_SECONDS=300  # 验证码过期时间（秒）
+    DATABASE=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.db')
 )
 
 # 验证码数据库表结构
 CAPTCHA_SCHEMA = """
-DROP TABLE IF EXISTS captcha_data;
-DROP TABLE IF EXISTS verification_tokens;
 DROP TABLE IF EXISTS captcha_sessions;
 
 CREATE TABLE captcha_sessions (
@@ -86,10 +81,6 @@ def verify_captcha_answer(session_id, answer):
     
     return result['answer'].upper() == answer.upper()
 
-import base64
-import hmac
-import hashlib
-
 @app.route('/api/captcha', methods=['GET'])
 def get_captcha():
     """获取验证码图片"""
@@ -124,37 +115,6 @@ def verify_captcha():
         return jsonify({'success': True})
     else:
         return jsonify({'success': False, 'message': '验证码错误，请重试'})
-
-def verify_captcha_token(token):
-    """验证一次性验证token"""
-    db = get_db()
-    # 从数据库验证最终令牌
-    token_record = db.execute(
-        'SELECT expires FROM verification_tokens WHERE token = ?',
-        (token,)
-    ).fetchone()
-
-    if not token_record:
-        return False
-
-    # 检查过期时间
-    now = datetime.now(pytz.UTC).timestamp()
-    if now > token_record['expires']:
-        db.execute(
-            'DELETE FROM verification_tokens WHERE token = ?',
-            (token,)
-        )
-        db.commit()
-        return False
-
-    # 验证后立即删除令牌
-    db.execute(
-        'DELETE FROM verification_tokens WHERE token = ?',
-        (token,)
-    )
-    db.commit()
-    return True
-
 
 def setup_logging():
     handler = RotatingFileHandler('app.log', maxBytes=1024 * 1024, backupCount=10)
@@ -393,10 +353,9 @@ def vote(poll_id):
     if request.method == 'POST':
         fingerprint = request.form.get('fingerprint')
         option_id = request.form.get('option')
-        verification_token = request.form.get('verification_token')
-
-        if not verification_token or not verify_captcha_token(verification_token):
-            flash('验证码验证失败，请重新完成验证')
+        
+        if not session.get('captcha_verified'):
+            flash('请先完成验证码验证')
             return render_template('vote.html', poll=poll, options=options)
             
         if not fingerprint:
@@ -436,19 +395,6 @@ def results(poll_id):
     poll_info['created_at'] = convert_to_local_time(poll['created_at'])
     
     return render_template('results.html', poll=poll_info, options=options)
-
-# 临时调试路由
-@app.route('/debug/db')
-def debug_db():
-    db = get_db()
-    polls = db.execute('SELECT * FROM polls').fetchall()
-    options = db.execute('SELECT * FROM options').fetchall()
-    
-    debug_info = {
-        'polls': [dict(poll) for poll in polls],
-        'options': [dict(opt) for opt in options]
-    }
-    return debug_info
 
 @app.errorhandler(404)
 def page_not_found(e):

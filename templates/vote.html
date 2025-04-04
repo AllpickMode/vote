@@ -11,7 +11,6 @@
     
     <form method="post" id="voteForm" class="vote-form">
         <input type="hidden" name="fingerprint" id="fingerprintInput">
-        <input type="hidden" name="verification_token" id="verificationToken">
         <div class="options-list">
             {% for option in options %}
             <div class="vote-option">
@@ -66,7 +65,6 @@
             const form = document.getElementById('voteForm');
             const fingerprintInput = document.getElementById('fingerprintInput');
             const submitBtn = document.getElementById('submitBtn');
-            const verificationToken = document.getElementById('verificationToken');
 
             const showError = (message) => {
                 const errorDiv = document.createElement('div');
@@ -146,12 +144,6 @@
 
             // 表单提交前验证
             form.addEventListener('submit', function(e) {
-                if (!verificationToken.value) {
-                    e.preventDefault();
-                    showError('请完成滑动验证');
-                    return false;
-                }
-
                 const selectedOption = form.querySelector('input[name="option"]:checked');
                 if (!selectedOption) {
                     e.preventDefault();
