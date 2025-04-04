@@ -84,17 +84,32 @@
             function showModal(message, callback) {
                 modalMessage.textContent = message;
                 modal.style.display = 'flex';
+                modal.classList.add('show');
                 
                 const closeModal = () => {
-                    modal.style.display = 'none';
-                    if (callback) callback();
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        if (callback) callback();
+                    }, 300);
                 };
 
-                modalClose.onclick = closeModal;
-                modalConfirm.onclick = closeModal;
+                // 自动关闭定时器
+                const autoCloseTimer = setTimeout(closeModal, 2000);
+
+                modalClose.onclick = () => {
+                    clearTimeout(autoCloseTimer);
+                    closeModal();
+                };
+                
+                modalConfirm.onclick = () => {
+                    clearTimeout(autoCloseTimer);
+                    closeModal();
+                };
 
                 window.onclick = (event) => {
                     if (event.target === modal) {
+                        clearTimeout(autoCloseTimer);
                         closeModal();
                     }
                 };

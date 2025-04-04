@@ -285,21 +285,17 @@ def create():
         options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
 
         if password != '995907':
-            return """
-                <script>
-                    alert('创建密码错误');
-                    window.location.href = '{}';
-                </script>
-            """.format(url_for('create'))
+            flash('[MODAL]创建密码错误')
+            return redirect(url_for('create'))
 
         options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
         
         if not question:
-            flash('问题不能为空')
+            flash('[MODAL]问题不能为空')
             return render_template('create.html', question=question, options=options)
         
         if len(options) < 2:
-            flash('至少需要两个有效选项')
+            flash('[MODAL]至少需要两个有效选项')
             return render_template('create.html', question=question, options=options)
         
         try:
@@ -314,11 +310,11 @@ def create():
                 db.execute('INSERT INTO options (poll_id, option_text) VALUES (?, ?)',
                           [poll_id, option])
             
-            flash('投票创建成功！')
+            flash('[MODAL]投票创建成功！')
             return redirect(url_for('index'))
         except Exception as e:
             app.logger.error(f"Create poll failed: {e}", exc_info=True)
-            flash('创建投票失败，请稍后重试')
+            flash('[MODAL]创建投票失败，请稍后重试')
             return render_template('create.html', question=question, options=options)
     
     return render_template('create.html')
@@ -343,27 +339,23 @@ def vote(poll_id):
     ''', [poll_id, ip_address, poll_id, ip_address]).fetchone()
     
     if last_vote:
-        return """
-            <script>
-                alert('您已经参与过这个投票了');
-                window.location.href = '{}';
-            </script>
-        """.format(url_for('results', poll_id=poll_id))
+                    flash('[MODAL]您已经参与过这个投票了')
+                    return redirect(url_for('results', poll_id=poll_id))
     
     if request.method == 'POST':
         fingerprint = request.form.get('fingerprint')
         option_id = request.form.get('option')
         
         if not session.get('captcha_verified'):
-            flash('请先完成验证码验证')
+            flash('[MODAL]请先完成验证码验证')
             return render_template('vote.html', poll=poll, options=options)
             
         if not fingerprint:
-            flash('无法验证浏览器指纹，请确保启用了JavaScript')
+            flash('[MODAL]无法验证浏览器指纹，请确保启用了JavaScript')
             return render_template('vote.html', poll=poll, options=options)
         
         if not option_id:
-            flash('请选择一个选项')
+            flash('[MODAL]请选择一个选项')
             return render_template('vote.html', poll=poll, options=options)
         
         try:
@@ -373,7 +365,7 @@ def vote(poll_id):
                 INSERT INTO vote_records (poll_id, option_id, ip_address, browser_fingerprint)
                 VALUES (?, ?, ?, ?)
             ''', [poll_id, option_id, ip_address, fingerprint])
-            flash('投票成功！')
+            flash('[MODAL]投票成功！')
             return redirect(url_for('results', poll_id=poll_id))
         except Exception as e:
             app.logger.error(f"Vote failed: {e}", exc_info=True)
