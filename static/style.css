@@ -993,16 +993,14 @@ input:checked + .switch-slider:before {
 }
 
 .btn-refresh {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--el-border-color);
-    border-radius: 4px;
-    background-color: var(--el-fill-color-darker);
-    color: var(--el-text-color-regular);
+   
+
     cursor: pointer;
     transition: all 0.3s;
 }
@@ -1158,16 +1156,13 @@ input:checked + .switch-slider:before {
 }
 
 .btn-refresh {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     padding: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--el-border-color);
-    border-radius: 4px;
-    background-color: var(--el-fill-color-darker);
-    color: var(--el-text-color-regular);
+   
     cursor: pointer;
     transition: all 0.3s;
 }
@@ -1939,22 +1934,19 @@ input:checked + .switch-slider:before {
 }
 
 .btn-refresh {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--el-border-color);
-    border-radius: 4px;
-    background-color: var(--el-fill-color-darker);
-    color: var(--el-text-color-regular);
+    color: #555555;
     transition: all 0.3s;
 }
 
 .btn-refresh:hover {
-    color: var(--el-color-primary);
-    border-color: var(--el-color-primary);
+
+   
     transform: rotate(180deg);
 }
 
@@ -2537,9 +2529,8 @@ body {
 .btn-refresh {
     padding: 8px;
     background: none;
-    border: 1px solid var(--el-border-color);
-    border-radius: var(--el-border-radius-base);
-    color: var(--el-text-color-regular);
+   
+
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
@@ -2548,9 +2539,9 @@ body {
 }
 
 .btn-refresh:hover {
-    color: var(--el-color-primary);
-    border-color: var(--el-color-primary-light-7);
-    background-color: var(--el-color-primary-light-9);
+
+ 
+  
 }
 
 /* 操作按钮区 */
