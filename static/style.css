@@ -820,8 +820,8 @@ input:checked + .switch-slider:before {
 /* 投票页面样式优化 */
 .vote-container {
     max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
+
+    padding: 0 2px;
 }
 
 .vote-form {
@@ -999,8 +999,7 @@ input:checked + .switch-slider:before {
 /* 响应式调整 */
 @media (max-width: 768px) {
     .vote-container {
-        margin: 20px auto;
-        padding: 0 16px;
+        padding: 0 2px;
     }
 
     .vote-form {
@@ -2719,10 +2718,7 @@ body {
     content: attr(data-votes);
 }
 
-.summary p[data-time]::before {
-    content: attr(data-time);
-    font-size: 16px;
-}
+
 
 .card:hover {
     box-shadow: var(--el-box-shadow-base);
