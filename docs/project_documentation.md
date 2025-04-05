@@ -81,25 +81,24 @@ CREATE TABLE options (
 );
 ```
 
-#### voter_ips 表 (投票记录表)
+#### vote_records 表 (投票记录表)
 ```sql
-CREATE TABLE voter_ips (
+CREATE TABLE vote_records (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     poll_id INTEGER NOT NULL,
+    option_id INTEGER NOT NULL,
     ip_address TEXT NOT NULL,
-    country_code CHAR(2) NOT NULL,
-    user_agent TEXT NOT NULL,
-    is_vpn BOOLEAN DEFAULT 0,
-    voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    request_count INTEGER DEFAULT 1,
-    block_until DATETIME,
-    UNIQUE(poll_id, ip_address)
+    browser_fingerprint TEXT NOT NULL,
+    voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (poll_id) REFERENCES polls (id),
+    FOREIGN KEY (option_id) REFERENCES options (id)
 );
 ```
 
-### 3.2 索引设计
-- `idx_voter_ips_block`: 用于快速查询被封禁的IP
-- `idx_voter_ips_country`: 用于按国家代码查询投票记录
+### 3.2 防重复投票机制
+- IP地址记录
+- 浏览器指纹识别
+- 时间戳记录
 
 ## 4. 核心功能实现
 
