@@ -1031,8 +1031,9 @@ input:checked + .switch-slider:before {
 /* 投票选项样式 */
 .vote-option {
     position: relative;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     width: 100%;
+    transition: all 0.3s;
 }
 
 .option-label {
