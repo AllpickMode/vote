@@ -3,41 +3,48 @@
 {% block title %}投票结果{% endblock %}
 
 {% block content %}
-    <h2>{{ poll.question }}</h2>
-    {% set total_votes = namespace(value=0) %}
-    {% for option in options %}
-        {% set total_votes.value = total_votes.value + option.votes %}
-    {% endfor %}
-    
-    <div class="results">
+<div class="vote-container">
+    <div class="vote-form">
+        <h2 class="vote-title">{{ poll.question }}</h2>
+        {% set total_votes = namespace(value=0) %}
         {% for option in options %}
-            {% set percentage = ((option.votes | float) / total_votes.value * 100) if total_votes.value > 0 else 0 %}
-            <div class="result">
-                <div class="result-header">
-                    <span class="option-text">{{ option.option_text }} <span class="vote-count">{{ option.votes }} 票</span> <span class="progress-stats">{{ "%.1f"|format(percentage) }}%</span></span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-track">
-                        <div class="progress" style="width: {{ percentage }}%; transition: width 0.8s ease-in-out"></div>
+            {% set total_votes.value = total_votes.value + option.votes %}
+        {% endfor %}
+        
+        <div class="results">
+            {% for option in options %}
+                {% set percentage = ((option.votes | float) / total_votes.value * 100) if total_votes.value > 0 else 0 %}
+                <div class="result">
+                    <div class="result-header">
+                        <div class="option-text">{{ option.option_text }}</div>
+                        <div class="vote-stats">
+                            <span class="vote-count">{{ option.votes }} 票</span>
+                            <span class="progress-stats">{{ "%.1f"|format(percentage) }}%</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-track">
+                            <div class="progress" style="width: {{ percentage }}%; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1)"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-    
-    <div class="summary">
-        <p data-votes="{{ total_votes.value }}">总投票数</p>
-        <p data-time="{{ poll.created_at }}">创建时间</p>
-    </div>
-    
-    <div class="actions">
-        <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 6L9 17l-5-5"></path>
-            </svg>
-            继续投票
-        </a>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">返回首页</a>
+            {% endfor %}
+        </div>
+        
+        <div class="summary">
+            <div>总投票数: {{ total_votes.value }}</div>
+            <div>创建时间: {{ poll.created_at }}</div>
+        </div>
+        
+        <div class="actions">
+            <a href="{{ url_for('vote', poll_id=poll.id) }}" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5"></path>
+                </svg>
+                继续投票
+            </a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">返回首页</a>
+        </div>
     </div>
 
     <script>

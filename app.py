@@ -1,18 +1,120 @@
 
 import sqlite3
 import logging
-from datetime import datetime
+import secrets
+import random
+import os
+from datetime import datetime, timedelta
 import pytz
 from logging.handlers import RotatingFileHandler
-from flask import Flask, render_template, request, redirect, url_for, g, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, g, flash, abort, session, jsonify, send_file, make_response, send_from_directory
+from io import BytesIO
 from functools import wraps
 
 app = Flask(__name__)
 app.config.update(
     DEBUG=False,
     SECRET_KEY='dev',
-    DATABASE='votes.db'
+    DATABASE=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.db')
 )
+
+# 验证码数据库表结构
+CAPTCHA_SCHEMA = """
+DROP TABLE IF EXISTS captcha_sessions;
+
+CREATE TABLE captcha_sessions (
+    id TEXT PRIMARY KEY,
+    answer TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL
+);
+"""
+
+def init_captcha_tables():
+    """初始化验证码相关数据表"""
+    with app.app_context():
+        db = get_db()
+        db.executescript(CAPTCHA_SCHEMA)
+        db.commit()
+
+from captcha.image import ImageCaptcha
+import string
+
+def generate_captcha_text(length=4):
+    """生成随机验证码文本"""
+    characters = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
+
+def generate_captcha_image(text):
+    """生成验证码图片"""
+    image = ImageCaptcha(width=160, height=60)
+    data = image.generate(text)
+    return BytesIO(data.read())
+
+def store_captcha_session(session_id, answer):
+    """存储验证码会话"""
+    db = get_db()
+    expires_at = datetime.now(pytz.UTC) + timedelta(minutes=5)
+    db.execute(
+        'INSERT INTO captcha_sessions (id, answer, expires_at) VALUES (?, ?, ?)',
+        (session_id, answer, expires_at.strftime('%Y-%m-%d %H:%M:%S'))
+    )
+    db.commit()
+
+def verify_captcha_answer(session_id, answer):
+    """验证验证码答案"""
+    db = get_db()
+    now = datetime.now(pytz.UTC)
+    
+    result = db.execute(
+        '''SELECT answer FROM captcha_sessions 
+           WHERE id = ? AND expires_at > ?''',
+        (session_id, now.strftime('%Y-%m-%d %H:%M:%S'))
+    ).fetchone()
+    
+    if not result:
+        return False
+        
+    # 清理已使用的验证码
+    db.execute('DELETE FROM captcha_sessions WHERE id = ?', (session_id,))
+    db.commit()
+    
+    return result['answer'].upper() == answer.upper()
+
+@app.route('/api/captcha', methods=['GET'])
+def get_captcha():
+    """获取验证码图片"""
+    # 生成验证码文本和会话ID
+    captcha_text = generate_captcha_text()
+    session_id = secrets.token_urlsafe(32)
+    
+    # 存储验证码会话
+    store_captcha_session(session_id, captcha_text)
+    
+    # 生成验证码图片
+    img_byte_arr = generate_captcha_image(captcha_text)
+    
+    # 返回图片和会话ID
+    response = make_response(send_file(img_byte_arr, mimetype='image/png'))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['X-Captcha-ID'] = session_id
+    return response
+
+@app.route('/api/verify-captcha', methods=['POST'])
+def verify_captcha():
+    """验证用户提交的验证码"""
+    data = request.get_json()
+    if not data or 'captcha_id' not in data or 'answer' not in data:
+        return jsonify({'success': False, 'message': '无效的请求数据'}), 400
+
+    session_id = data['captcha_id']
+    answer = data['answer']
+    
+    if verify_captcha_answer(session_id, answer):
+        session['captcha_verified'] = True
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'message': '验证码错误，请重试'})
 
 def setup_logging():
     handler = RotatingFileHandler('app.log', maxBytes=1024 * 1024, backupCount=10)
@@ -48,26 +150,72 @@ def close_db(error):
         db.close()
 
 def init_db():
-    with app.app_context():
-        db = get_db()
+    """Initialize the database."""
+    # 确保在应用上下文中运行
+    if not app.config.get('DATABASE'):
+        raise RuntimeError('Database configuration not found')
+
+    db_path = app.config['DATABASE']
+
+    # 关闭所有现有连接
+    if hasattr(g, 'db'):
+        g.db.close()
+        delattr(g, 'db')
+
+    # 删除现有数据库文件
+    try:
+        if os.path.exists(db_path):
+            # 确保文件未被锁定
+            with open(db_path, 'a'):
+                os.remove(db_path)
+    except (IOError, OSError) as e:
+        print(f"Error removing database file: {e}")
+        return
+
+    # 创建新的数据库连接
+    try:
+        # 创建新的数据库连接，不使用get_db()以避免缓存
+        db = sqlite3.connect(db_path, isolation_level=None)
+        db.row_factory = sqlite3.Row
+
+        # 禁用外键约束和日志
+        db.execute("PRAGMA foreign_keys = OFF")
+        db.execute("PRAGMA journal_mode = OFF")
+        db.execute("PRAGMA synchronous = OFF")
+        db.execute("BEGIN TRANSACTION")
+
+        # 读取并执行schema
         with open('schema.sql', 'r', encoding='utf-8') as f:
             db.executescript(f.read())
-        
-        try:
-            utc_now = datetime.now(pytz.UTC).strftime('%Y-%m-%d %H:%M:%S')
-            db.execute('INSERT INTO polls (question, created_at) VALUES (?, ?)', 
-                      ['您最喜欢的编程语言是？', utc_now])
-            poll_id = db.execute('SELECT last_insert_rowid()').fetchone()[0]
-            
-            for option in ['Python', 'JavaScript', 'Java', 'C++']:
-                db.execute('INSERT INTO options (poll_id, option_text) VALUES (?, ?)',
-                          [poll_id, option])
-            
-            db.commit()
-            print('数据库初始化完成')
-        except Exception as e:
-            db.rollback()
-            print(f'初始化失败: {e}')
+
+        # 插入初始数据
+        utc_now = datetime.now(pytz.UTC).strftime('%Y-%m-%d %H:%M:%S')
+        db.execute('INSERT INTO polls (question, created_at) VALUES (?, ?)',
+                  ('您最喜欢的编程语言是？', utc_now))
+        poll_id = db.execute('SELECT last_insert_rowid()').fetchone()[0]
+
+        for option in ['Python', 'JavaScript', 'Java', 'C++']:
+            db.execute('INSERT INTO options (poll_id, option_text) VALUES (?, ?)',
+                      (poll_id, option))
+
+        # 初始化验证码表
+        db.executescript(CAPTCHA_SCHEMA)
+
+        # 提交事务并重新启用约束
+        db.execute("COMMIT")
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute("PRAGMA journal_mode = WAL")
+        db.execute("PRAGMA synchronous = NORMAL")
+
+        print('数据库初始化完成')
+
+    except Exception as e:
+        print(f'初始化失败: {e}')
+        if 'db' in locals():
+            db.execute("ROLLBACK")
+    finally:
+        if 'db' in locals():
+            db.close()
 
 @app.after_request
 def handle_db_transaction(response):
@@ -137,21 +285,17 @@ def create():
         options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
 
         if password != '995907':
-            return """
-                <script>
-                    alert('创建密码错误');
-                    window.location.href = '{}';
-                </script>
-            """.format(url_for('create'))
+            flash('[MODAL]创建密码错误')
+            return redirect(url_for('create'))
 
         options = [opt.strip() for opt in request.form.getlist('options[]') if opt.strip()]
         
         if not question:
-            flash('问题不能为空')
+            flash('[MODAL]问题不能为空')
             return render_template('create.html', question=question, options=options)
         
         if len(options) < 2:
-            flash('至少需要两个有效选项')
+            flash('[MODAL]至少需要两个有效选项')
             return render_template('create.html', question=question, options=options)
         
         try:
@@ -166,11 +310,11 @@ def create():
                 db.execute('INSERT INTO options (poll_id, option_text) VALUES (?, ?)',
                           [poll_id, option])
             
-            flash('投票创建成功！')
+            flash('[MODAL]投票创建成功！')
             return redirect(url_for('index'))
         except Exception as e:
             app.logger.error(f"Create poll failed: {e}", exc_info=True)
-            flash('创建投票失败，请稍后重试')
+            flash('[MODAL]创建投票失败，请稍后重试')
             return render_template('create.html', question=question, options=options)
     
     return render_template('create.html')
@@ -195,33 +339,23 @@ def vote(poll_id):
     ''', [poll_id, ip_address, poll_id, ip_address]).fetchone()
     
     if last_vote:
-        return """
-            <script>
-                alert('您已经参与过这个投票了');
-                window.location.href = '{}';
-            </script>
-        """.format(url_for('results', poll_id=poll_id))
+                    flash('[MODAL]您已经参与过这个投票了')
+                    return redirect(url_for('results', poll_id=poll_id))
     
     if request.method == 'POST':
         fingerprint = request.form.get('fingerprint')
         option_id = request.form.get('option')
-        captcha_verified = request.form.get('captcha_verified')
-
-        if captcha_verified != 'true':
-            flash('请完成滑动验证')
-            return render_template('vote.html', poll=poll, options=options)
-        captcha_verified = request.form.get('captcha_verified')
-
-        if not captcha_verified or captcha_verified != 'true':
-            flash('请完成滑动验证')
-            return render_template('vote.html', poll=poll, options=options)
         
+        if not session.get('captcha_verified'):
+            flash('[MODAL]请先完成验证码验证')
+            return render_template('vote.html', poll=poll, options=options)
+            
         if not fingerprint:
-            flash('无法验证浏览器指纹，请确保启用了JavaScript')
+            flash('[MODAL]无法验证浏览器指纹，请确保启用了JavaScript')
             return render_template('vote.html', poll=poll, options=options)
         
         if not option_id:
-            flash('请选择一个选项')
+            flash('[MODAL]请选择一个选项')
             return render_template('vote.html', poll=poll, options=options)
         
         try:
@@ -231,7 +365,7 @@ def vote(poll_id):
                 INSERT INTO vote_records (poll_id, option_id, ip_address, browser_fingerprint)
                 VALUES (?, ?, ?, ?)
             ''', [poll_id, option_id, ip_address, fingerprint])
-            flash('投票成功！')
+            flash('[MODAL]投票成功！')
             return redirect(url_for('results', poll_id=poll_id))
         except Exception as e:
             app.logger.error(f"Vote failed: {e}", exc_info=True)
@@ -254,19 +388,6 @@ def results(poll_id):
     
     return render_template('results.html', poll=poll_info, options=options)
 
-# 临时调试路由
-@app.route('/debug/db')
-def debug_db():
-    db = get_db()
-    polls = db.execute('SELECT * FROM polls').fetchall()
-    options = db.execute('SELECT * FROM options').fetchall()
-    
-    debug_info = {
-        'polls': [dict(poll) for poll in polls],
-        'options': [dict(opt) for opt in options]
-    }
-    return debug_info
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -283,5 +404,22 @@ def init_db_command():
     init_db()
     print('数据库初始化完成.')
 
+def ensure_captcha_table():
+    """确保验证码表存在"""
+    db = get_db()
+    # 检查表是否存在
+    result = db.execute("""
+        SELECT name FROM sqlite_master 
+        WHERE type='table' AND name='captcha_sessions'
+    """).fetchone()
+    
+    if not result:
+        # 如果表不存在，创建它
+        db.executescript(CAPTCHA_SCHEMA)
+        db.commit()
+
 if __name__ == '__main__':
+    # 在应用启动时初始化验证码表
+    with app.app_context():
+        ensure_captcha_table()
     app.run(debug=True)

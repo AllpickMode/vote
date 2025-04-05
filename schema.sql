@@ -1,12 +1,15 @@
-
 DROP TABLE IF EXISTS vote_records;
 DROP TABLE IF EXISTS options;
 DROP TABLE IF EXISTS polls;
+DROP TABLE IF EXISTS sqlite_sequence;
+
+PRAGMA foreign_keys = OFF;
+BEGIN TRANSACTION;
 
 CREATE TABLE polls (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE options (
@@ -23,12 +26,10 @@ CREATE TABLE vote_records (
     option_id INTEGER NOT NULL,
     ip_address TEXT NOT NULL,
     browser_fingerprint TEXT NOT NULL,
-    voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (poll_id) REFERENCES polls (id),
     FOREIGN KEY (option_id) REFERENCES options (id)
 );
 
--- 创建索引以加快查询速度
-CREATE INDEX idx_vote_records_poll_ip ON vote_records(poll_id, ip_address);
-CREATE INDEX idx_vote_records_fingerprint ON vote_records(poll_id, browser_fingerprint);
-CREATE INDEX idx_vote_records_time ON vote_records(voted_at);
+COMMIT;
+PRAGMA foreign_keys = ON;

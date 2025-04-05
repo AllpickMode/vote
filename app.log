@@ -1183,3 +1183,934 @@ Traceback (most recent call last):
     return getattr(obj, attribute)
            ^^^^^^^^^^^^^^^^^^^^^^^
 jinja2.exceptions.UndefinedError: 'now' is undefined
+2025-03-31 16:16:14,337 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:470]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:16:19,979 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:470]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:16:23,851 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:470]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:16:26,724 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:470]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:39:54,278 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:40:00,041 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:54:48,804 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:54:52,082 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:58:37,440 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:58:47,132 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:58:52,082 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 16:58:59,665 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:475]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 117, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 102, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 48, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:09:03,701 ERROR: Error: name 'store_captcha_data' is not defined [in C:\Code\vote\app.py:483]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 114, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'store_captcha_data' is not defined
+2025-03-31 17:09:06,555 ERROR: Error: name 'store_captcha_data' is not defined [in C:\Code\vote\app.py:483]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 114, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'store_captcha_data' is not defined
+2025-03-31 17:09:08,048 ERROR: Error: name 'store_captcha_data' is not defined [in C:\Code\vote\app.py:483]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 114, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'store_captcha_data' is not defined
+2025-03-31 17:09:09,654 ERROR: Error: name 'store_captcha_data' is not defined [in C:\Code\vote\app.py:483]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 114, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'store_captcha_data' is not defined
+2025-03-31 17:09:15,095 ERROR: Error: name 'store_captcha_data' is not defined [in C:\Code\vote\app.py:483]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 114, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'store_captcha_data' is not defined
+2025-03-31 17:09:32,820 ERROR: Error: name 'store_captcha_data' is not defined [in C:\Code\vote\app.py:483]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 114, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+    ^^^^^^^^^^^^^^^^^^
+NameError: name 'store_captcha_data' is not defined
+2025-03-31 17:15:31,507 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:494]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 110, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:15:31,760 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:494]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 110, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:15:35,065 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:494]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 110, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:21:51,847 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:494]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 110, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:21:52,399 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:494]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 110, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:21:55,690 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:494]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 110, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:23:22,522 ERROR: Error: images do not match [in C:\Code\vote\app.py:505]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-03-31 17:23:27,509 ERROR: Error: images do not match [in C:\Code\vote\app.py:505]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-03-31 17:23:28,943 ERROR: Error: images do not match [in C:\Code\vote\app.py:505]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-03-31 17:23:31,989 ERROR: Error: no such table: captcha_data [in C:\Code\vote\app.py:505]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_data
+2025-03-31 17:23:48,072 ERROR: Error: images do not match [in C:\Code\vote\app.py:505]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-03-31 17:30:19,611 ERROR: Error: images do not match [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-03-31 17:30:22,086 ERROR: Error: table captcha_data has no column named token [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:08:07,691 ERROR: Error: images do not match [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:08:12,032 ERROR: Error: table captcha_data has no column named token [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:08:19,542 ERROR: Error: images do not match [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:08:45,282 ERROR: Error: table captcha_data has no column named token [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:10:20,730 ERROR: Error: images do not match [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:10:22,364 ERROR: Error: images do not match [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:10:26,931 ERROR: Error: table captcha_data has no column named token [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:10:29,988 ERROR: Error: table captcha_data has no column named token [in C:\Code\vote\app.py:508]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 136, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:11:45,117 ERROR: Generate captcha failed: table captcha_data has no column named token [in C:\Code\vote\app.py:156]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 137, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 121, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:11:46,305 ERROR: Generate captcha failed: images do not match [in C:\Code\vote\app.py:156]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 137, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:11:49,524 ERROR: Generate captcha failed: images do not match [in C:\Code\vote\app.py:156]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 137, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 112, in generate_captcha
+    bg.paste(slider.rotate(random.randint(-15, 15), expand=True),
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:13:14,261 ERROR: Generate captcha failed: table captcha_data has no column named token [in C:\Code\vote\app.py:157]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 138, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 122, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:13:17,709 ERROR: Generate captcha failed: table captcha_data has no column named token [in C:\Code\vote\app.py:157]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 138, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 122, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 65, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named token
+2025-04-02 09:14:36,961 ERROR: Generate captcha failed: table captcha_data has no column named target_pos [in C:\Code\vote\app.py:160]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 141, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_pos
+2025-04-02 09:14:40,705 ERROR: Generate captcha failed: table captcha_data has no column named target_pos [in C:\Code\vote\app.py:160]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 141, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_pos)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_pos
+2025-04-02 09:17:45,576 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:160]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 141, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:17:53,925 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:160]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 141, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:21:23,332 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:182]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 142, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:21:24,892 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:182]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 142, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:21:28,014 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:182]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 142, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:21:44,811 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:182]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 142, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:21:59,333 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:182]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 142, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:25:04,760 ERROR: Generate captcha failed: table captcha_data has no column named target_position [in C:\Code\vote\app.py:182]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 142, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 125, in generate_captcha
+    store_captcha_data(verification_token, target_position)
+  File "C:\Code\vote\app.py", line 68, in store_captcha_data
+    db.execute(
+sqlite3.OperationalError: table captcha_data has no column named target_position
+2025-04-02 09:47:48,060 ERROR: Generate captcha failed: images do not match [in C:\Code\vote\app.py:195]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 155, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 130, in generate_captcha
+    bg.paste(rotated_slider, (target_position, 50), rotated_mask)
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-02 09:47:53,342 ERROR: Generate captcha failed: images do not match [in C:\Code\vote\app.py:195]
+Traceback (most recent call last):
+  File "C:\Code\vote\app.py", line 155, in generate_captcha_api
+    img_byte_arr = generate_captcha(verification_token)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 130, in generate_captcha
+    bg.paste(rotated_slider, (target_position, 50), rotated_mask)
+  File "C:\Code\vote\.venv\Lib\site-packages\PIL\Image.py", line 1760, in paste
+    self.im.paste(im, box, mask.im)
+ValueError: images do not match
+2025-04-04 21:23:33,459 ERROR: Error: no such table: captcha_sessions [in C:\Code\vote\app.py:454]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 99, in get_captcha
+    store_captcha_session(session_id, captcha_text)
+  File "C:\Code\vote\app.py", line 61, in store_captcha_session
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_sessions
+2025-04-04 21:30:49,346 ERROR: Error: no such table: captcha_sessions [in C:\Code\vote\app.py:459]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 101, in get_captcha
+    store_captcha_session(session_id, captcha_text)
+  File "C:\Code\vote\app.py", line 63, in store_captcha_session
+    db.execute(
+sqlite3.OperationalError: no such table: captcha_sessions
+2025-04-05 00:01:51,813 ERROR: Error: 'str object' has no attribute 'strftime' [in C:\Code\vote\app.py:397]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 389, in results
+    return render_template('results.html', poll=poll_info, options=options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 152, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 133, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\results.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Code\vote\templates\base.html", line 42, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\templates\results.html", line 42, in block 'content'
+    <span class="summary-value">{{ poll.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\utils.py", line 83, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'str object' has no attribute 'strftime'
+2025-04-05 11:12:41,496 ERROR: Error: Encountered unknown tag 'endfor'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endautoescape'. The innermost block that needs to be closed is 'autoescape'. [in C:\Code\vote\app.py:397]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 278, in index
+    return render_template('index.html', polls=polls_with_status)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 152, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 133, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\index.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\base.html", line 129, in template
+    {% endfor %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endfor'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endautoescape'. The innermost block that needs to be closed is 'autoescape'.
+2025-04-05 11:13:11,902 ERROR: Error: Encountered unknown tag 'endfor'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endautoescape'. The innermost block that needs to be closed is 'autoescape'. [in C:\Code\vote\app.py:397]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 278, in index
+    return render_template('index.html', polls=polls_with_status)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 152, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 133, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\index.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\base.html", line 129, in template
+    {% endfor %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endfor'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endautoescape'. The innermost block that needs to be closed is 'autoescape'.
+2025-04-05 11:13:32,746 ERROR: Error: Encountered unknown tag 'endfor'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endautoescape'. The innermost block that needs to be closed is 'autoescape'. [in C:\Code\vote\app.py:397]
+Traceback (most recent call last):
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\app.py", line 278, in index
+    return render_template('index.html', polls=polls_with_status)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 152, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\flask\templating.py", line 133, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\index.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "C:\Code\vote\.venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Code\vote\templates\base.html", line 129, in template
+    {% endfor %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'endfor'. You probably made a nesting mistake. Jinja is expecting this tag, but currently looking for 'endautoescape'. The innermost block that needs to be closed is 'autoescape'.

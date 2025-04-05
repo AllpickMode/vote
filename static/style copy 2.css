@@ -497,7 +497,7 @@ tr:hover td {
     }
 
     .nav-menu {
-       
+        border-top: 1px solid var(--el-border-color)
     }
 
     .card {
@@ -792,7 +792,7 @@ input:checked+.switch-slider:before {
 
 .option-label {
     width: 100%;
-    min-height: 44px
+    min-height: 48px
 }
 
 .captcha-container {
@@ -1082,7 +1082,7 @@ input:checked+.switch-slider:before {
 }
 
 .btn-primary,.btn-secondary {
-    min-height: 44px;
+    height: 44px;
     min-width: 140px;
     font-size: 15px
 }
@@ -3435,7 +3435,6 @@ button[type=submit]:hover {
     }
 
     #options-container input,.btn-danger.btn-sm {
-        min-height: 44px;
         width: 100%
     }
 }

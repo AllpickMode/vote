@@ -11,7 +11,6 @@
     <link rel="preload" href="{{ url_for('static', filename='icons/vote-icon.svg') }}" as="image" type="image/svg+xml">
     <title>{% block title %}{% endblock %} - Vote App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/slider-captcha.css') }}">
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -61,19 +60,8 @@
     </div>
 
     <!-- 将JavaScript移到底部以提高页面加载性能 -->
-    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js" defer></script>
-    <script src="{{ url_for('static', filename='js/slider-captcha.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fingerprint.js') }}" defer></script>
     <script>
-        async function getBrowserFingerprint() {
-            try {
-                const fp = await FingerprintJS.load();
-                const result = await fp.get();
-                return result.visitorId;
-            } catch (error) {
-                console.error('获取浏览器指纹失败:', error);
-                return null;
-            }
-        }
 
         // Modal functionality
         document.addEventListener('DOMContentLoaded', () => {
@@ -86,17 +74,32 @@
             function showModal(message, callback) {
                 modalMessage.textContent = message;
                 modal.style.display = 'flex';
+                modal.classList.add('show');
                 
                 const closeModal = () => {
-                    modal.style.display = 'none';
-                    if (callback) callback();
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        if (callback) callback();
+                    }, 300);
                 };
 
-                modalClose.onclick = closeModal;
-                modalConfirm.onclick = closeModal;
+                // 自动关闭定时器
+                const autoCloseTimer = setTimeout(closeModal, 2000);
+
+                modalClose.onclick = () => {
+                    clearTimeout(autoCloseTimer);
+                    closeModal();
+                };
+                
+                modalConfirm.onclick = () => {
+                    clearTimeout(autoCloseTimer);
+                    closeModal();
+                };
 
                 window.onclick = (event) => {
                     if (event.target === modal) {
+                        clearTimeout(autoCloseTimer);
                         closeModal();
                     }
                 };
