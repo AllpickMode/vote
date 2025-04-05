@@ -127,15 +127,43 @@ textarea:focus {
     background-color: var(--el-fill-color);
 }
 
-/* 投票选项样式调整 */
+/* 投票选项样式 */
 .vote-option {
-    background-color: var(--el-bg-color);
-    border: 1px solid var(--el-border-color);
+    position: relative;
+    margin-bottom: 12px;
+    width: 100%;
+    transition: all 0.3s;
 }
 
 .vote-option:hover {
     background-color: var(--el-fill-color);
     border-color: var(--el-color-primary);
+    transform: translateX(4px);
+}
+
+.vote-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.option-label {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px 12px 45px;
+    background-color: var(--el-fill-color-darker);
+    border: 1px solid var(--el-border-color);
+    border-radius: 6px;
+    color: var(--el-text-color-regular);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+    position: relative;
 }
 
 /* 进度条样式调整 */
@@ -819,9 +847,22 @@ input:checked + .switch-slider:before {
 
 /* 投票页面样式优化 */
 .vote-container {
-    max-width: 800px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    padding: 0 2px;
+.vote-form {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .vote-form {
@@ -2276,6 +2317,8 @@ body {
 }
 
 .content-wrapper {
+    /*内容居中*/
+    
     padding: 24px 0;
 }
 
