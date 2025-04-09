@@ -1436,7 +1436,8 @@ button[onclick="addOption()"]:hover {
 
 .btn-primary:hover {
     background-color: var(--el-color-primary-light-3);
-    border-color: var(--el-color-primary-light-3)
+    border-color: var(--el-color-primary-light-3);
+    color: #fff
 }
 
 .btn-primary:active {
